@@ -38,8 +38,15 @@ jobs:
               if not (p.get(k) or '').strip():
                   errs.append(f"`{k}` is empty")
           repo = (p.get('repo') or '').strip()
-          if not re.match(r'^https?://github\.com/[^/\s]+/[^/\s]+/?$', repo):
-              errs.append("`repo` must be a GitHub URL like https://github.com/user/repo")
+          # Accept either a regular repo URL or a gist URL.
+          repo_re = r'^https?://github\.com/[^/\s]+/[^/\s]+/?$'
+          gist_re = r'^https?://gist\.github\.com/[^/\s]+/[A-Za-z0-9]+(/[A-Za-z0-9]+)?/?$'
+          if not (re.match(repo_re, repo) or re.match(gist_re, repo)):
+              errs.append(
+                  "`repo` must be either a GitHub repo URL "
+                  "(`https://github.com/<user>/<repo>`) or a gist URL "
+                  "(`https://gist.github.com/<user>/<id>`). Got: `" + (repo or "<empty>") + "`"
+              )
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write("errors=" + " | ".join(errs) + "\n")
           PY
@@ -68,11 +75,130 @@ jobs:
               labels: ['needs-fixes'],
             });
 
-      - name: Append entry to _data/talks.yml
+      - name: Check duplicate submission
+        id: dup
         if: steps.validate.outputs.errors == ''
+        env:
+          AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE: ${{ github.event.issue.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # One submission per GitHub user. Three checks, in order. Each
+        # produces a one-line URL to the existing submission and exits early.
+        # Order matters: an approved talk wins over an open issue, which wins
+        # over an open PR — that's also the order of "most permanent / most
+        # decided" so the rejection comment names the most authoritative
+        # existing submission.
+        run: |
+          python3 <<'PY'
+          import json, os, pathlib, re, subprocess, sys, yaml
+          author = os.environ['AUTHOR']
+          issue = int(os.environ['ISSUE'])
+          existing_url = ''
+          existing_kind = ''
+
+          # (a) approved talk in _data/talks.yml
+          path = pathlib.Path('_data/talks.yml')
+          if path.exists():
+              loaded = yaml.safe_load(path.read_text())
+              if isinstance(loaded, list):
+                  for t in loaded:
+                      if isinstance(t, dict) and t.get('submitter_github') == author:
+                          # Link to the originating issue if present, else the
+                          # talks.yml line.
+                          if t.get('issue'):
+                              existing_url = f"https://github.com/{os.environ.get('GITHUB_REPOSITORY','')}/issues/{t['issue']}"
+                          else:
+                              existing_url = f"https://github.com/{os.environ.get('GITHUB_REPOSITORY','')}/blob/main/_data/talks.yml"
+                          existing_kind = 'approved'
+                          break
+
+          def gh_json(args):
+              try:
+                  r = subprocess.run(
+                      args, capture_output=True, text=True, check=True, timeout=30
+                  )
+                  return json.loads(r.stdout) if r.stdout.strip() else []
+              except (subprocess.CalledProcessError, subprocess.TimeoutExpired, json.JSONDecodeError) as e:
+                  print(f"::warning::gh call failed: {e}", file=sys.stderr)
+                  return []
+
+          # (b) other open issue with talk-submission label by same user
+          if not existing_url:
+              issues = gh_json([
+                  'gh', 'issue', 'list',
+                  '--state', 'open',
+                  '--label', 'talk-submission',
+                  '--author', author,
+                  '--json', 'number,url',
+                  '--limit', '50',
+              ])
+              for i in issues:
+                  if int(i.get('number', 0)) != issue:
+                      existing_url = i.get('url', '')
+                      existing_kind = 'open-issue'
+                      break
+
+          # (c) open PR with talk-submission label whose body claims the same author
+          if not existing_url:
+              prs = gh_json([
+                  'gh', 'pr', 'list',
+                  '--state', 'open',
+                  '--label', 'talk-submission',
+                  '--json', 'number,url,body',
+                  '--limit', '50',
+              ])
+              author_re = re.compile(rf'by @{re.escape(author)}\b')
+              for pr in prs:
+                  if author_re.search(pr.get('body') or ''):
+                      existing_url = pr.get('url', '')
+                      existing_kind = 'open-pr'
+                      break
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"existing_url={existing_url}\n")
+              f.write(f"existing_kind={existing_kind}\n")
+          PY
+
+      - name: Comment on duplicate submission
+        if: steps.validate.outputs.errors == '' && steps.dup.outputs.existing_url != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = `${{ steps.dup.outputs.existing_url }}`;
+            const kind = `${{ steps.dup.outputs.existing_kind }}`;
+            const friendlyKind = ({
+              'approved': 'an approved talk',
+              'open-issue': 'an open submission',
+              'open-pr': 'a pending review (PR)',
+            })[kind] || 'a previous submission';
+            const body = [
+              `Thanks for submitting! It looks like you already have ${friendlyKind} on this event:`,
+              "",
+              url,
+              "",
+              "We accept **one talk per speaker**. If you'd like to revise your submission:",
+              "- For an open submission/PR: close it and open a fresh issue with the corrected fields.",
+              "- For an already-approved talk: ask an organizer to update it directly on `_data/talks.yml` via PR.",
+              "",
+              "Closing this issue without a new submission is fine if you posted by mistake.",
+            ].join("\n");
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: context.issue.number,
+              labels: ['duplicate-submission'],
+            });
+
+      - name: Append entry to _data/talks.yml
+        if: steps.validate.outputs.errors == '' && steps.dup.outputs.existing_url == ''
         env:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
           ISSUE: ${{ github.event.issue.number }}
+          AUTHOR: ${{ github.event.issue.user.login }}
         run: |
           python3 <<'PY'
           import json, os, datetime, pathlib, yaml
@@ -89,13 +215,14 @@ jobs:
                   domain = domain[len(prefix):]
           domain = domain.rstrip('/')
           entry = {
-              'first':        p['first'].strip(),
-              'last':         p['last'].strip(),
-              'domain':       domain,
-              'repo':         p['repo'].strip().rstrip('/'),
-              'summary':      p['summary'].strip(),
-              'submitted_at': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
-              'issue':        int(os.environ['ISSUE']),
+              'first':            p['first'].strip(),
+              'last':             p['last'].strip(),
+              'domain':           domain,
+              'repo':             p['repo'].strip().rstrip('/'),
+              'summary':          p['summary'].strip(),
+              'submitter_github': os.environ['AUTHOR'],
+              'submitted_at':     datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+              'issue':            int(os.environ['ISSUE']),
           }
           existing.append(entry)
           path.parent.mkdir(parents=True, exist_ok=True)
@@ -109,7 +236,7 @@ jobs:
           PY
 
       - name: Open PR
-        if: steps.validate.outputs.errors == ''
+        if: steps.validate.outputs.errors == '' && steps.dup.outputs.existing_url == ''
         uses: peter-evans/create-pull-request@v6
         with:
           branch: talk/${{ github.event.issue.number }}

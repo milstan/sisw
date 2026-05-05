@@ -26,6 +26,10 @@ GitHub Pages rebuilds → new row appears in the "Who's coming" table.
 
 If validation fails, the bot comments on the issue listing what needs fixing and labels it `needs-fixes`. Submitter closes and reopens with corrections.
 
+**One talk per speaker.** A second submission by the same GitHub user is detected and rejected at the issue stage — no PR is created, the issue is labeled `duplicate-submission`, and the bot comments with a link to the speaker's existing submission (whether it's already in `_data/talks.yml`, an open issue still pending review, or an open PR awaiting merge).
+
+**Gist URLs are accepted.** The "GitHub repo to share" field accepts both `https://github.com/<user>/<repo>` and `https://gist.github.com/<user>/<id>`. Gists render as `<user>/<id>` in the table.
+
 ## One-time setup after pushing this repo
 
 1. **Create the repo at https://github.com/milstan/sisw** and push these files to `main`.
@@ -47,7 +51,8 @@ bundle exec jekyll serve
 
 - **Approve:** open the PR, give it a quick read, click Merge. Done.
 - **Reject:** close the PR with a comment. Optionally close the originating issue too.
-- **Edit before approving:** push commits to the `talk/<issue#>` branch (e.g. fix a typo in the summary), then merge.
+- **Edit before approving:** push commits to the `talk/<issue#>` branch (e.g. fix a typo in the summary), then merge. Pages rebuilds automatically on merge to `main`.
+- **Duplicate label:** if the bot mistakenly flagged a submission as a duplicate, remove the `duplicate-submission` label and re-trigger the workflow by editing then re-saving the issue, or simply ask the submitter to close + reopen with the correction.
 
 ## File map
 
@@ -58,7 +63,7 @@ bundle exec jekyll serve
 | `_config.yml` | Jekyll config + theme (`jekyll-theme-minimal`). |
 | `.github/ISSUE_TEMPLATE/talk-submission.yml` | The submission form fields. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Disables blank issues so people use the form. |
-| `.github/workflows/submission-to-pr.yml` | Issue → validate → append → PR. |
+| `.github/workflows/submission-to-pr.yml` | Issue → validate → dedup → append → PR. |
 
 ## Contacting submitters
 
