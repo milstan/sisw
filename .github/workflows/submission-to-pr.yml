@@ -29,9 +29,13 @@ jobs:
         id: validate
         env:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
+        # Build the rendered comment body in Python so the github-script step
+        # below never has to template user-controlled strings into JS source
+        # (which breaks if the input contains backticks, ${, etc.). The
+        # comment body is passed through env, not via ${{ }} interpolation.
         run: |
           python3 <<'PY'
-          import json, os, re
+          import json, os, re, secrets
           p = json.loads(os.environ['PAYLOAD'])
           errs = []
           for k in ('first', 'last', 'domain', 'summary'):
@@ -47,27 +51,36 @@ jobs:
                   "(`https://github.com/<user>/<repo>`) or a gist URL "
                   "(`https://gist.github.com/<user>/<id>`). Got: `" + (repo or "<empty>") + "`"
               )
+          has_errors = "true" if errs else "false"
+          if errs:
+              body_lines = [
+                  "Thanks for submitting! A few things need fixing before we can review:",
+                  "",
+              ] + [f"- {e}" for e in errs] + [
+                  "",
+                  "Issues can't be edited and re-parsed cleanly, so please **close this "
+                  "issue and open a new one** with corrections. Sorry for the friction!",
+              ]
+              body = "\n".join(body_lines)
+          else:
+              body = ""
+          delim = "EOF_" + secrets.token_hex(8)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write("errors=" + " | ".join(errs) + "\n")
+              f.write(f"has_errors={has_errors}\n")
+              f.write(f"body<<{delim}\n{body}\n{delim}\n")
           PY
 
       - name: Comment on validation failure
-        if: steps.validate.outputs.errors != ''
+        if: steps.validate.outputs.has_errors == 'true'
         uses: actions/github-script@v7
+        env:
+          BODY: ${{ steps.validate.outputs.body }}
         with:
           script: |
-            const errs = `${{ steps.validate.outputs.errors }}`.split(' | ').filter(Boolean);
-            const body = [
-              "Thanks for submitting! A few things need fixing before we can review:",
-              "",
-              ...errs.map(e => `- ${e}`),
-              "",
-              "Issues can't be edited and re-parsed cleanly, so please **close this issue and open a new one** with corrections. Sorry for the friction!"
-            ].join("\n");
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
-              body,
+              body: process.env.BODY,
             });
             await github.rest.issues.addLabels({
               ...context.repo,
@@ -77,7 +90,7 @@ jobs:
 
       - name: Check duplicate submission
         id: dup
-        if: steps.validate.outputs.errors == ''
+        if: steps.validate.outputs.has_errors == 'false'
         env:
           AUTHOR: ${{ github.event.issue.user.login }}
           ISSUE: ${{ github.event.issue.number }}
@@ -87,12 +100,14 @@ jobs:
         # Order matters: an approved talk wins over an open issue, which wins
         # over an open PR — that's also the order of "most permanent / most
         # decided" so the rejection comment names the most authoritative
-        # existing submission.
+        # existing submission. Builds the rendered comment body here so the
+        # comment step doesn't have to template strings into JS.
         run: |
           python3 <<'PY'
-          import json, os, pathlib, re, subprocess, sys, yaml
+          import json, os, pathlib, re, secrets, subprocess, sys, yaml
           author = os.environ['AUTHOR']
           issue = int(os.environ['ISSUE'])
+          repo_full = os.environ.get('GITHUB_REPOSITORY', '')
           existing_url = ''
           existing_kind = ''
 
@@ -103,12 +118,10 @@ jobs:
               if isinstance(loaded, list):
                   for t in loaded:
                       if isinstance(t, dict) and t.get('submitter_github') == author:
-                          # Link to the originating issue if present, else the
-                          # talks.yml line.
                           if t.get('issue'):
-                              existing_url = f"https://github.com/{os.environ.get('GITHUB_REPOSITORY','')}/issues/{t['issue']}"
+                              existing_url = f"https://github.com/{repo_full}/issues/{t['issue']}"
                           else:
-                              existing_url = f"https://github.com/{os.environ.get('GITHUB_REPOSITORY','')}/blob/main/_data/talks.yml"
+                              existing_url = f"https://github.com/{repo_full}/blob/main/_data/talks.yml"
                           existing_kind = 'approved'
                           break
 
@@ -154,38 +167,47 @@ jobs:
                       existing_kind = 'open-pr'
                       break
 
+          friendly = {
+              'approved':   'an approved talk',
+              'open-issue': 'an open submission',
+              'open-pr':    'a pending review (PR)',
+          }.get(existing_kind, 'a previous submission')
+
+          if existing_url:
+              body_lines = [
+                  f"Thanks for submitting! It looks like you already have {friendly} on this event:",
+                  "",
+                  existing_url,
+                  "",
+                  "We accept **one talk per speaker**. If you'd like to revise your submission:",
+                  "- For an open submission/PR: close it and open a fresh issue with the corrected fields.",
+                  "- For an already-approved talk: ask an organizer to update it directly on `_data/talks.yml` via PR.",
+                  "",
+                  "Closing this issue without a new submission is fine if you posted by mistake.",
+              ]
+              body = "\n".join(body_lines)
+          else:
+              body = ""
+
+          delim = "EOF_" + secrets.token_hex(8)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write(f"existing_url={existing_url}\n")
               f.write(f"existing_kind={existing_kind}\n")
+              f.write(f"is_duplicate={'true' if existing_url else 'false'}\n")
+              f.write(f"body<<{delim}\n{body}\n{delim}\n")
           PY
 
       - name: Comment on duplicate submission
-        if: steps.validate.outputs.errors == '' && steps.dup.outputs.existing_url != ''
+        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'true'
         uses: actions/github-script@v7
+        env:
+          BODY: ${{ steps.dup.outputs.body }}
         with:
           script: |
-            const url = `${{ steps.dup.outputs.existing_url }}`;
-            const kind = `${{ steps.dup.outputs.existing_kind }}`;
-            const friendlyKind = ({
-              'approved': 'an approved talk',
-              'open-issue': 'an open submission',
-              'open-pr': 'a pending review (PR)',
-            })[kind] || 'a previous submission';
-            const body = [
-              `Thanks for submitting! It looks like you already have ${friendlyKind} on this event:`,
-              "",
-              url,
-              "",
-              "We accept **one talk per speaker**. If you'd like to revise your submission:",
-              "- For an open submission/PR: close it and open a fresh issue with the corrected fields.",
-              "- For an already-approved talk: ask an organizer to update it directly on `_data/talks.yml` via PR.",
-              "",
-              "Closing this issue without a new submission is fine if you posted by mistake.",
-            ].join("\n");
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
-              body,
+              body: process.env.BODY,
             });
             await github.rest.issues.addLabels({
               ...context.repo,
@@ -194,7 +216,7 @@ jobs:
             });
 
       - name: Append entry to _data/talks.yml
-        if: steps.validate.outputs.errors == '' && steps.dup.outputs.existing_url == ''
+        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
         env:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
           ISSUE: ${{ github.event.issue.number }}
@@ -236,7 +258,7 @@ jobs:
           PY
 
       - name: Open PR
-        if: steps.validate.outputs.errors == '' && steps.dup.outputs.existing_url == ''
+        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
         uses: peter-evans/create-pull-request@v6
         with:
           branch: talk/${{ github.event.issue.number }}
