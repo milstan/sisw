@@ -5,18 +5,35 @@ title: SISW
 
 <style>
   /* Match GitHub's own README rendering for wide tables: collapse to
-     horizontal-scroll on narrow viewports rather than overflowing the
-     page layout. Primer applies `display: table !important` so we
-     have to use !important to win the cascade. */
+     horizontal-scroll on narrow viewports rather than squeezing the
+     summary column into a tall narrow strip. Primer applies
+     `display: table !important` so we use !important to win the
+     cascade.
+
+     The trick that actually produces horizontal scroll (vs just block
+     layout) is wrapping the inner table-cell layout in a child that
+     keeps its natural width. We can't add a wrapper around the
+     markdown-rendered table, so we use display:block on the outer
+     table and put the table-layout children back into table mode at
+     min-width: 100% so they extend horizontally past the viewport. */
   .markdown-body table {
     display: block !important;
-    width: max-content;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     max-width: 100%;
-    overflow: auto;
   }
-  /* Give the summary column a sensible max width so a long talk
-     summary wraps to a comfortable line length instead of forcing
-     the row to expand horizontally on desktop. */
+  .markdown-body table > thead,
+  .markdown-body table > tbody {
+    display: table;
+    min-width: 100%;
+    width: max-content;
+  }
+  /* Cells align to top so the Speaker name stays visible even when the
+     summary cell is many lines tall. */
+  .markdown-body table th,
+  .markdown-body table td { vertical-align: top !important; }
+  /* On desktop, summary column wraps to a comfortable line length
+     (~70 chars) instead of stretching to fill the available width. */
   .markdown-body table td:nth-child(4) { max-width: 56ch; white-space: normal; }
 </style>
 
