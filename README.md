@@ -15,9 +15,9 @@
 ## Who's coming
 
 <!-- TALKS:START -->
-| Speaker | Startup | Project / gist | What they're talking about |
-|---|---|---|---|
-| [Milan Stanisavljevic](https://github.com/milstan) (@milstan) | [leadbay.ai](https://leadbay.ai) | [milstan/3b12f938f344f4ae1f511dd19e56adce](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. The key insight is that the model discovers what to optimise for — dimensions you wouldn't think to specify — and grounds evaluation in your examples instead of self-assessment. We've used this in production at Leadbay for writing-style learning and cold-start ICP descriptions; it replaces hand-written prompts with learned ones, no fine-tuning, no GPU. I'll walk through the protocol (analyse → generate → score → refine), share what surprised us (the anti-pattern list ended up being as load-bearing as the prompt itself), and compare it to few-shot, fine-tuning, and DSPy/OPRO. |
+| Speaker | Startup | Project | What they're talking about |
+|---|---|:-:|---|
+| [Milan Stanisavljevic](https://github.com/milstan) (@milstan) | [leadbay.ai](https://leadbay.ai) | [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
 <!-- TALKS:END -->
 
 This section is auto-regenerated from `_data/talks.yml` by `.github/workflows/submission-to-pr.yml` on each merge — don't edit between the markers by hand.
