@@ -268,7 +268,7 @@ jobs:
               labels: ['duplicate-submission'],
             });
 
-      - name: Append entry to _data/talks.yml
+      - name: Append entry to _data/talks.yml + regenerate README block
         if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
         env:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
@@ -277,8 +277,10 @@ jobs:
           REPO_CANONICAL: ${{ steps.validate.outputs.repo_canonical }}
         run: |
           python3 <<'PY'
-          import json, os, datetime, pathlib, yaml
+          import json, os, datetime, pathlib, re, yaml
           p = json.loads(os.environ['PAYLOAD'])
+
+          # 1. Append the new entry to _data/talks.yml.
           path = pathlib.Path('_data/talks.yml')
           existing = []
           if path.exists():
@@ -310,6 +312,60 @@ jobs:
           )
           dumped = yaml.safe_dump(existing, sort_keys=False, allow_unicode=True, default_flow_style=False)
           path.write_text(header + dumped)
+
+          # 2. Regenerate the README "Who's coming" table between the
+          #    <!-- TALKS:START --> and <!-- TALKS:END --> markers. The
+          #    homepage IS the README, rendered by github.com — no Jekyll
+          #    pipeline involved.
+          def md_escape(text):
+              # Pipe and backslash are the only chars that break a markdown
+              # table cell. Newlines collapse to spaces inside a cell.
+              return text.replace('\\', '\\\\').replace('|', '\\|').replace('\n', ' ')
+
+          def repo_basename(url):
+              for prefix in ('https://github.com/', 'http://github.com/',
+                             'https://gist.github.com/', 'http://gist.github.com/'):
+                  if url.startswith(prefix):
+                      return url[len(prefix):]
+              return url
+
+          rows = ["| Speaker | Startup | Project / gist | What they're talking about |",
+                  "|---|---|---|---|"]
+          for t in existing:
+              if not isinstance(t, dict):
+                  continue
+              first = (t.get('first') or '').strip()
+              last  = (t.get('last') or '').strip()
+              gh    = (t.get('submitter_github') or '').strip()
+              dom   = (t.get('domain') or '').strip()
+              repo  = (t.get('repo') or '').strip()
+              summ  = (t.get('summary') or '').strip()
+              if gh:
+                  speaker_cell = f"[{md_escape(first)} {md_escape(last)}](https://github.com/{gh}) (@{gh})"
+              else:
+                  speaker_cell = f"{md_escape(first)} {md_escape(last)}"
+              startup_cell = f"[{md_escape(dom)}](https://{dom})" if dom else ""
+              repo_cell    = f"[{md_escape(repo_basename(repo))}]({repo})" if repo else ""
+              summary_cell = md_escape(summ)
+              rows.append(f"| {speaker_cell} | {startup_cell} | {repo_cell} | {summary_cell} |")
+
+          new_block = "<!-- TALKS:START -->\n" + "\n".join(rows) + "\n<!-- TALKS:END -->"
+          readme = pathlib.Path('README.md')
+          src = readme.read_text()
+          updated = re.sub(
+              r"<!-- TALKS:START -->.*?<!-- TALKS:END -->",
+              lambda _m: new_block,
+              src,
+              count=1,
+              flags=re.DOTALL,
+          )
+          if updated != src:
+              readme.write_text(updated)
+          else:
+              # Markers missing — log a warning but don't fail the workflow.
+              # The talks.yml update has already landed; an organizer can
+              # restore the markers by hand.
+              print("::warning::TALKS:START/END markers not found in README.md — table not regenerated.")
           PY
 
       - name: Detect existing PR branch

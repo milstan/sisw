@@ -1,13 +1,33 @@
 # SISW
 
-**Live site:** <https://milstan.github.io/sisw/>
+**Self-Improving Software Workshop** — a gathering of people building things. Each speaker gives a short talk on what they're working on and what they've learned. Audience: other builders.
 
-Public event page + submission flow. 100% on GitHub — no servers, no databases, no third-party services.
+> **Date and venue:** TBA — submit anyway, organizers will follow up via your GitHub profile as we firm up the schedule.
+>
+> **Format:** ~10 minute talks, slides or live demo. **Organizer:** [@milstan](https://github.com/milstan).
+
+[**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
+
+*Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges. One talk per speaker; gist URLs are welcome.*
+
+---
+
+## Who's coming
+
+<!-- TALKS:START -->
+| Speaker | Startup | Project / gist | What they're talking about |
+|---|---|---|---|
+| [Milan Stanisavljevic](https://github.com/milstan) (@milstan) | [leadbay.ai](https://leadbay.ai) | [milstan/3b12f938f344f4ae1f511dd19e56adce](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. The key insight is that the model discovers what to optimise for — dimensions you wouldn't think to specify — and grounds evaluation in your examples instead of self-assessment. We've used this in production at Leadbay for writing-style learning and cold-start ICP descriptions; it replaces hand-written prompts with learned ones, no fine-tuning, no GPU. I'll walk through the protocol (analyse → generate → score → refine), share what surprised us (the anti-pattern list ended up being as load-bearing as the prompt itself), and compare it to few-shot, fine-tuning, and DSPy/OPRO. |
+<!-- TALKS:END -->
+
+This section is auto-regenerated from `_data/talks.yml` by `.github/workflows/submission-to-pr.yml` on each merge — don't edit between the markers by hand.
+
+---
 
 ## How a submission flows
 
 ```
-Visitor clicks "Submit your talk"  on milstan.github.io/sisw
+Visitor clicks "Submit your talk"  on github.com/milstan/sisw
         │
         ▼
 Issue Form opens on github.com/milstan/sisw  (submitter needs a GitHub account)
@@ -23,7 +43,7 @@ GitHub Action `submission-to-pr` runs:
 Organizer reviews PR. **Merge = approval.**
         │
         ▼
-GitHub Pages rebuilds → new row appears in the "Who's coming" table.
+The README rebuilds → new row appears in the "Who's coming" table above.
 ```
 
 If validation fails, the bot comments on the issue listing what needs fixing and labels it `needs-fixes`. Submitter closes and reopens with corrections.
@@ -35,23 +55,6 @@ If validation fails, the bot comments on the issue listing what needs fixing and
 3. an open PR with the `talk-submission` label whose body credits the same `@author` (a pending review).
 
 **Gist URLs are accepted.** The "GitHub repo to share" field accepts both `https://github.com/<user>/<repo>` and `https://gist.github.com/<user>/<id>`. Gists render as `<user>/<id>` in the table.
-
-## One-time setup after pushing this repo
-
-1. **Create the repo at https://github.com/milstan/sisw** and push these files to `main`.
-2. **Settings → Pages → Build and deployment → Source:** *Deploy from a branch*, branch `main`, folder `/ (root)`. Save.
-3. **Settings → Actions → General → Workflow permissions:** select *Read and write permissions*, and tick *Allow GitHub Actions to create and approve pull requests*. (This is what lets the workflow open the PR.)
-4. Wait ~30s for the first Pages build. Site goes live at **https://milstan.github.io/sisw/**.
-
-That's it. No tokens, no secrets, no other config.
-
-## Local preview
-
-```bash
-bundle install
-bundle exec jekyll serve
-# open http://localhost:4000
-```
 
 ## Approving / rejecting submissions
 
@@ -66,19 +69,27 @@ bundle exec jekyll serve
   git commit -am "Fix speaker domain typo" && git push
   ```
 
-  The PR auto-updates; click Merge. Pages rebuilds within ~60s.
+  The PR auto-updates; click Merge. The README's "Who's coming" block is regenerated automatically.
 - **Duplicate label remediation:** if the bot incorrectly flagged a submission as duplicate, remove the `duplicate-submission` label, ask the submitter to close + reopen with the corrected fields. The workflow runs on `opened` events only, so re-applying the label or re-editing won't re-trigger.
+
+## One-time setup after creating the repo
+
+1. **Settings → Actions → General → Workflow permissions:** select *Read and write permissions*, and tick *Allow GitHub Actions to create and approve pull requests*. (This is what lets the workflow open the PR.)
+2. (Optional) **Settings → Pages:** enable to serve a redirect at `<user>.github.io/<repo>/` that points back to this README. The canonical homepage is the README itself, viewed at https://github.com/milstan/sisw.
+
+No tokens, no secrets, no other config.
 
 ## File map
 
 | Path | What it does |
 |---|---|
-| `index.md` | Homepage. Renders the "Who's coming" table from `_data/talks.yml`. |
+| `README.md` | The homepage. Renders natively on github.com. The "Who's coming" block between `<!-- TALKS:START -->` and `<!-- TALKS:END -->` is auto-regenerated from `_data/talks.yml` on each merge. |
 | `_data/talks.yml` | Source of truth for approved talks. Append-only via merged PRs. |
-| `_config.yml` | Jekyll config + theme (`jekyll-theme-minimal`). |
+| `index.md` | Tiny redirect page for the optional GitHub Pages site at `<user>.github.io/<repo>/`. |
+| `_config.yml` | Jekyll config (only relevant if Pages is enabled). |
 | `.github/ISSUE_TEMPLATE/talk-submission.yml` | The submission form fields. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Disables blank issues so people use the form. |
-| `.github/workflows/submission-to-pr.yml` | Issue → validate → dedup → append → PR. |
+| `.github/workflows/submission-to-pr.yml` | Issue → validate → dedup → append-to-yml + regenerate-README → PR. |
 
 ## What `_data/talks.yml` looks like
 
