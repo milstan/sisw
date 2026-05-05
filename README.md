@@ -17,7 +17,8 @@ We invite submissions of **5-minute talks**, followed by a few questions and min
 
 > **When:** May 22, 2026 · 3pm PDT
 > **Where:** San Francisco, California · venue TBD
-> **Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & Erik Dahl ([Parrot](https://parrotapp.com))
+
+**Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & Erik Dahl ([Parrot](https://parrotapp.com))
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
 
