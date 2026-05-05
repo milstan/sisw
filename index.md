@@ -33,7 +33,7 @@ title: SISW
 
 # SISW
 
-**Self-Improving Software Workshop** — a gathering of people building things. Each speaker gives a short talk about what they're working on and what they've learned.
+**Self-Improving Software Workshop** — a gathering of people building things. Each speaker gives a short talk on what they're working on and what they've learned. Audience: other builders.
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
 

@@ -1,5 +1,17 @@
 name: Talk submission → PR
 
+# Triggered ONLY on issue creation (not edits, label changes, or comments)
+# AND only when the issue carries the `talk-submission` label. The form
+# applies that label automatically; manually-filed issues without the
+# label cause the workflow to start but the job to skip — no PR, no
+# comment, no label change.
+#
+# Idempotency: branch name `talk/<issue#>` is deterministic, so re-runs
+# update the existing branch rather than create a new one. The dedup
+# step (Check duplicate submission) is read-only against the GitHub API
+# + _data/talks.yml; safe to retry. Append-entry is single-writer per
+# branch.
+
 on:
   issues:
     types: [opened]
@@ -33,6 +45,8 @@ jobs:
         # below never has to template user-controlled strings into JS source
         # (which breaks if the input contains backticks, ${, etc.). The
         # comment body is passed through env, not via ${{ }} interpolation.
+        # Also: accept tolerant repo URLs (with /tree/, /blob/, .git, fragments)
+        # and emit the canonical form for downstream steps.
         run: |
           python3 <<'PY'
           import json, os, re, secrets
@@ -41,17 +55,37 @@ jobs:
           for k in ('first', 'last', 'domain', 'summary'):
               if not (p.get(k) or '').strip():
                   errs.append(f"`{k}` is empty")
-          repo = (p.get('repo') or '').strip()
-          # Accept either a regular repo URL or a gist URL.
-          repo_re = r'^https?://github\.com/[^/\s]+/[^/\s]+/?$'
-          gist_re = r'^https?://gist\.github\.com/[^/\s]+/[A-Za-z0-9]+(/[A-Za-z0-9]+)?/?$'
-          if not (re.match(repo_re, repo) or re.match(gist_re, repo)):
+          repo_raw = (p.get('repo') or '').strip()
+
+          # Strip URL fragment + .git suffix before pattern checks.
+          repo = repo_raw.split('#', 1)[0]
+          if repo.endswith('.git'):
+              repo = repo[:-4]
+
+          # Accept tolerant shapes for github.com (any extra path is OK and
+          # will be trimmed below); gist.github.com is flat and matched strictly.
+          gh_re   = re.compile(r'^https?://github\.com/([^/\s]+)/([^/\s]+)(/[^\s]*)?/?$')
+          gist_re = re.compile(r'^https?://gist\.github\.com/[^/\s]+/[A-Za-z0-9]+(/[A-Za-z0-9]+)?/?$')
+
+          gh_match   = gh_re.match(repo)
+          gist_match = gist_re.match(repo)
+
+          repo_canonical = repo
+          if gh_match:
+              # Normalize to https://github.com/<user>/<repo> (drop tree/blob/commit/etc.)
+              user = gh_match.group(1)
+              name = gh_match.group(2).rstrip('/')
+              repo_canonical = f"https://github.com/{user}/{name}"
+          elif gist_match:
+              repo_canonical = repo.rstrip('/')
+          else:
               errs.append(
                   "`repo` must be a GitHub repo or gist URL. "
                   "Examples: `https://github.com/octocat/Hello-World` "
                   "or `https://gist.github.com/octocat/abc123def456`. "
-                  "Got: `" + (repo or "<empty>") + "`"
+                  "Got: `" + (repo_raw or "<empty>") + "`"
               )
+
           has_errors = "true" if errs else "false"
           if errs:
               body_lines = [
@@ -68,6 +102,7 @@ jobs:
           delim = "EOF_" + secrets.token_hex(8)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write(f"has_errors={has_errors}\n")
+              f.write(f"repo_canonical={repo_canonical}\n")
               f.write(f"body<<{delim}\n{body}\n{delim}\n")
           PY
 
@@ -222,6 +257,7 @@ jobs:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
           ISSUE: ${{ github.event.issue.number }}
           AUTHOR: ${{ github.event.issue.user.login }}
+          REPO_CANONICAL: ${{ steps.validate.outputs.repo_canonical }}
         run: |
           python3 <<'PY'
           import json, os, datetime, pathlib, yaml
@@ -237,11 +273,12 @@ jobs:
               if domain.startswith(prefix):
                   domain = domain[len(prefix):]
           domain = domain.rstrip('/')
+          repo_canonical = (os.environ.get('REPO_CANONICAL') or p['repo']).strip().rstrip('/')
           entry = {
               'first':            p['first'].strip(),
               'last':             p['last'].strip(),
               'domain':           domain,
-              'repo':             p['repo'].strip().rstrip('/'),
+              'repo':             repo_canonical,
               'summary':          p['summary'].strip(),
               'submitter_github': os.environ['AUTHOR'],
               'submitted_at':     datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -273,7 +310,7 @@ jobs:
             |---|---|
             | **Speaker** | ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }} |
             | **Startup** | <https://${{ fromJSON(steps.parse.outputs.jsonString).domain }}> |
-            | **Repo** | ${{ fromJSON(steps.parse.outputs.jsonString).repo }} |
+            | **Repo** | ${{ steps.validate.outputs.repo_canonical }} |
 
             > ${{ fromJSON(steps.parse.outputs.jsonString).summary }}
 
