@@ -29,15 +29,56 @@ title: SISW
     table.talks th:nth-child(4), table.talks td:nth-child(4) { width: 36%; }
     table.talks th:nth-child(1), table.talks td:nth-child(1) { width: 22%; }
   }
+
+  /* Submit CTA — the single most important pixel on the page.
+     Minimal theme styles all anchors as plain blue text, so the link
+     blends with every other link nearby. Make it visually distinct:
+     real button shape, comfortable padding, hover-darken. */
+  a.submit-cta {
+    display: inline-block;
+    padding: 12px 22px;
+    margin: 8px 0 12px 0;
+    background: #267CB9;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    border: 1px solid #1f6699;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  a.submit-cta:hover, a.submit-cta:focus {
+    background: #1f6699;
+    color: #fff !important;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  /* Event details strip — sits above the CTA so a speaker knows when/where
+     before clicking. */
+  .event-details {
+    background: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .event-details strong { color: #222; }
 </style>
 
 # SISW
 
 **Self-Improving Software Workshop** — a gathering of people building things. Each speaker gives a short talk on what they're working on and what they've learned. Audience: other builders.
 
-[**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
+<div class="event-details" markdown="1">
+**Date and venue:** TBA — submit anyway, organizers will follow up via your GitHub profile as we firm up the schedule.<br>
+**Format:** ~10 minute talks, slides or live demo. <strong>Organizer:</strong> <a href="https://github.com/milstan">@milstan</a>.
+</div>
 
-*Short talks (~10 minutes), bring slides or a live demo. Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges. One talk per speaker; gist URLs are welcome.*
+<a class="submit-cta" href="https://github.com/milstan/sisw/issues/new?template=talk-submission.yml">→ Submit your talk</a>
+
+*Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges. One talk per speaker; gist URLs are welcome.*
 
 ---
 

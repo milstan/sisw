@@ -89,12 +89,16 @@ jobs:
           has_errors = "true" if errs else "false"
           if errs:
               body_lines = [
-                  "Thanks for submitting! A few things need fixing before we can review:",
+                  "Thanks for submitting! A few things need fixing:",
                   "",
               ] + [f"- {e}" for e in errs] + [
                   "",
-                  "Issues can't be edited and re-parsed cleanly, so please **close this "
-                  "issue and open a new one** with corrections. Sorry for the friction!",
+                  "Edits to the original issue won't re-parse cleanly, so the cleanest "
+                  "path is to close this one and "
+                  "[open a fresh submission](https://github.com/"
+                  + os.environ.get('GITHUB_REPOSITORY', 'milstan/sisw')
+                  + "/issues/new?template=talk-submission.yml) "
+                  "with the corrections — same fields, just the right repo URL.",
               ]
               body = "\n".join(body_lines)
           else:
