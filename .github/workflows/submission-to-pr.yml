@@ -144,6 +144,12 @@ jobs:
         # comment step doesn't have to template strings into JS.
         run: |
           python3 <<'PY'
+          # Dedup is three short-circuit checks, in priority order:
+          #   (a) approved talk     — `submitter_github` already in _data/talks.yml
+          #   (b) open issue        — another talk-submission issue by same author
+          #   (c) open PR           — another talk-submission PR claiming same author
+          # First hit wins; we name the kind so the rejection comment can be
+          # tailored ("approved talk" / "open submission" / "pending review").
           import json, os, pathlib, re, secrets, subprocess, sys, yaml
           author = os.environ['AUTHOR']
           issue = int(os.environ['ISSUE'])
@@ -298,6 +304,25 @@ jobs:
           dumped = yaml.safe_dump(existing, sort_keys=False, allow_unicode=True, default_flow_style=False)
           path.write_text(header + dumped)
           PY
+
+      - name: Detect existing PR branch
+        # Purely informational. peter-evans/create-pull-request@v6 already
+        # handles re-runs idempotently (updates the branch in place, doesn't
+        # create a duplicate). Logging the detected state makes the rerun
+        # behavior visible in the action log so a future maintainer doesn't
+        # have to reverse-engineer it. continue-on-error so a 404 (fresh
+        # branch) doesn't fail the job.
+        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
+        continue-on-error: true
+        env:
+          BRANCH: talk/${{ github.event.issue.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh api "repos/${GITHUB_REPOSITORY}/branches/${BRANCH}" >/dev/null 2>&1; then
+            echo "::notice::Branch ${BRANCH} already exists; create-pull-request will update it in place."
+          else
+            echo "::notice::Branch ${BRANCH} is fresh; create-pull-request will create it."
+          fi
 
       - name: Open PR
         if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
