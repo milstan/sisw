@@ -1,5 +1,7 @@
 # SISW
 
+**Live site:** <https://milstan.github.io/sisw/>
+
 Public event page + submission flow. 100% on GitHub — no servers, no databases, no third-party services.
 
 ## How a submission flows

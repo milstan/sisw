@@ -41,6 +41,7 @@ jobs:
         id: validate
         env:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
+          AUTHOR: ${{ github.event.issue.user.login }}
         # Build the rendered comment body in Python so the github-script step
         # below never has to template user-controlled strings into JS source
         # (which breaks if the input contains backticks, ${, etc.). The
@@ -51,6 +52,7 @@ jobs:
           python3 <<'PY'
           import json, os, re, secrets
           p = json.loads(os.environ['PAYLOAD'])
+          author = os.environ.get('AUTHOR', 'there')
           errs = []
           for k in ('first', 'last', 'domain', 'summary'):
               if not (p.get(k) or '').strip():
@@ -89,7 +91,7 @@ jobs:
           has_errors = "true" if errs else "false"
           if errs:
               body_lines = [
-                  "Thanks for submitting! A few things need fixing:",
+                  f"Thanks for submitting, @{author}! A few things need fixing:",
                   "",
               ] + [f"- {e}" for e in errs] + [
                   "",
@@ -221,7 +223,7 @@ jobs:
 
           if existing_url:
               body_lines = [
-                  f"Thanks for submitting! It looks like you already have {friendly} on this event:",
+                  f"Thanks for submitting, @{author}! It looks like you already have {friendly} on this event:",
                   "",
                   existing_url,
                   "",
