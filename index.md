@@ -6,10 +6,17 @@ title: SISW
 <style>
   /* Match GitHub's own README rendering for wide tables: collapse to
      horizontal-scroll on narrow viewports rather than overflowing the
-     page layout. This is github.com's actual rule. */
-  .markdown-body table { display: block; width: max-content; max-width: 100%; overflow: auto; }
-  /* Give the summary column a sensible max width so a long talk summary
-     wraps to ~70ch instead of forcing the row to expand horizontally. */
+     page layout. Primer applies `display: table !important` so we
+     have to use !important to win the cascade. */
+  .markdown-body table {
+    display: block !important;
+    width: max-content;
+    max-width: 100%;
+    overflow: auto;
+  }
+  /* Give the summary column a sensible max width so a long talk
+     summary wraps to a comfortable line length instead of forcing
+     the row to expand horizontally on desktop. */
   .markdown-body table td:nth-child(4) { max-width: 56ch; white-space: normal; }
 </style>
 
