@@ -15,9 +15,9 @@
 ## Who's coming
 
 <!-- TALKS:START -->
-| Speaker | Startup | Project | What they're talking about |
-|---|---|:-:|---|
-| [Milan Stanisavljevic](https://github.com/milstan) (@milstan) | [leadbay.ai](https://leadbay.ai) | [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
+| Speaker | Talk |
+|---|---|
+| [**Milan Stanisavljevic**](https://github.com/milstan) (@milstan)<br>[leadbay.ai](https://leadbay.ai) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
 <!-- TALKS:END -->
 
 This section is auto-regenerated from `_data/talks.yml` by `.github/workflows/submission-to-pr.yml` on each merge — don't edit between the markers by hand.

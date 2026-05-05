@@ -340,7 +340,7 @@ jobs:
               # table cell. Newlines collapse to spaces inside a cell.
               return text.replace('\\', '\\\\').replace('|', '\\|').replace('\n', ' ')
 
-          def truncate_summary(text, issue_num, max_chars=220):
+          def truncate_summary(text, issue_num, max_chars=320):
               # Keep the table compact. Take the first sentence (up to the
               # first ./?/! followed by space) if it fits in max_chars,
               # otherwise hard-cut at the nearest word boundary. Append a
@@ -363,8 +363,12 @@ jobs:
                   truncated = text[:cut].rstrip().rstrip('.,;:!?')
               return f"{md_escape(truncated)} […](https://github.com/{repo_full}/issues/{issue_num})"
 
-          rows = ["| Speaker | Startup | Project | What they're talking about |",
-                  "|---|---|:-:|---|"]
+          # Two-column layout: speaker bio (name + handle + domain + project
+          # icon, stacked) on the left, talk summary on the right. Gives
+          # the summary roughly 70% of the table width which reads naturally
+          # on github.com without forcing horizontal scroll.
+          rows = ["| Speaker | Talk |",
+                  "|---|---|"]
           for t in existing:
               if not isinstance(t, dict):
                   continue
@@ -375,18 +379,24 @@ jobs:
               repo  = (t.get('repo') or '').strip()
               summ  = (t.get('summary') or '').strip()
               issue = t.get('issue')
+
+              # Line 1: bold name (linked to GitHub profile if known) + (@handle).
+              full_name = f"{md_escape(first)} {md_escape(last)}".strip()
               if gh:
-                  speaker_cell = f"[{md_escape(first)} {md_escape(last)}](https://github.com/{gh}) (@{gh})"
+                  line1 = f"[**{full_name}**](https://github.com/{gh}) (@{gh})"
               else:
-                  speaker_cell = f"{md_escape(first)} {md_escape(last)}"
-              startup_cell = f"[{md_escape(dom)}](https://{dom})" if dom else ""
-              # Project cell is just a 🔗 icon linked to the repo / gist —
-              # keeps the column narrow; the talk is the content, not the URL.
-              # The field is optional, so an empty cell is rendered as an
-              # em-dash placeholder so the table reads cleanly.
-              repo_cell    = f"[🔗]({repo})" if repo else "—"
+                  line1 = f"**{full_name}**"
+              # Line 2: domain · 🔗 (icon only when repo present).
+              parts = []
+              if dom:
+                  parts.append(f"[{md_escape(dom)}](https://{dom})")
+              if repo:
+                  parts.append(f"[🔗]({repo})")
+              line2 = " · ".join(parts)
+
+              speaker_cell = f"{line1}<br>{line2}" if line2 else line1
               summary_cell = truncate_summary(summ, issue) if issue else md_escape(summ)
-              rows.append(f"| {speaker_cell} | {startup_cell} | {repo_cell} | {summary_cell} |")
+              rows.append(f"| {speaker_cell} | {summary_cell} |")
 
           new_block = "<!-- TALKS:START -->\n" + "\n".join(rows) + "\n<!-- TALKS:END -->"
           readme = pathlib.Path('README.md')
