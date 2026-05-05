@@ -65,9 +65,11 @@ jobs:
               repo = repo[:-4]
 
           # Accept tolerant shapes for github.com (any extra path is OK and
-          # will be trimmed below); gist.github.com is flat and matched strictly.
+          # will be trimmed below); gist.github.com gets the same treatment
+          # for the optional revision-SHA suffix so the table renders the
+          # canonical `<user>/<id>` instead of `<user>/<id>/<revision-sha>`.
           gh_re   = re.compile(r'^https?://github\.com/([^/\s]+)/([^/\s]+)(/[^\s]*)?/?$')
-          gist_re = re.compile(r'^https?://gist\.github\.com/[^/\s]+/[A-Za-z0-9]+(/[A-Za-z0-9]+)?/?$')
+          gist_re = re.compile(r'^https?://gist\.github\.com/([^/\s]+)/([A-Za-z0-9]+)(/[A-Za-z0-9]+)?/?$')
 
           gh_match   = gh_re.match(repo)
           gist_match = gist_re.match(repo)
@@ -79,7 +81,10 @@ jobs:
               name = gh_match.group(2).rstrip('/')
               repo_canonical = f"https://github.com/{user}/{name}"
           elif gist_match:
-              repo_canonical = repo.rstrip('/')
+              # Normalize to https://gist.github.com/<user>/<id> (drop revision SHA).
+              user = gist_match.group(1)
+              gid  = gist_match.group(2)
+              repo_canonical = f"https://gist.github.com/{user}/{gid}"
           else:
               errs.append(
                   "`repo` must be a GitHub repo or gist URL. "
