@@ -1,0 +1,74 @@
+name: Post-merge RSVP comment
+
+# When an organizer merges a "talk-submission" PR, post a confirmation
+# comment on the originating issue with the Google Calendar event RSVP
+# link (read from repo variable `SISW_EVENT_URL`). If the variable
+# isn't set yet, the workflow still posts an "approved" comment but
+# without a calendar link.
+#
+# How email gets captured: the linked Google Calendar event is public-
+# RSVP (anyone with the link can mark themselves attending). When a
+# speaker RSVPs Yes while signed in to a Google account, Google
+# Calendar shares their email with the event organizer. No form, no
+# server, no separate tooling.
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  rsvp-comment:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'talk-submission')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on originating issue with RSVP link
+        uses: actions/github-script@v7
+        env:
+          EVENT_URL: ${{ vars.SISW_EVENT_URL }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+
+            // Recover the originating issue # and submitter handle from
+            // the PR body, which the submission workflow wrote with the
+            // shape "Submitted via #<N> by @<login>.".
+            const issueMatch  = body.match(/#(\d+)/);
+            const authorMatch = body.match(/by @([A-Za-z0-9-]+)/);
+            if (!issueMatch) {
+              core.warning('No "#<N>" issue reference found in PR body — skipping RSVP comment.');
+              return;
+            }
+            const issue_number = parseInt(issueMatch[1], 10);
+            const author = authorMatch ? authorMatch[1] : 'there';
+
+            const eventUrl = (process.env.EVENT_URL || '').trim();
+            const lines = [`@${author} 🎉 Your talk is approved and live on the homepage!`];
+            if (eventUrl) {
+              lines.push('');
+              lines.push(
+                `**Please RSVP to lock in your spot:** ${eventUrl}`
+              );
+              lines.push('');
+              lines.push(
+                "RSVP-ing **Yes** shares your Google account email with the " +
+                "organizer (that's how we'll send you logistics — slot, venue, " +
+                "speaker chat, etc.). No email collected anywhere else."
+              );
+            } else {
+              lines.push('');
+              lines.push(
+                "_(Calendar invite link not configured yet. The organizer " +
+                "will follow up via your GitHub profile.)_"
+              );
+            }
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number,
+              body: lines.join('\n'),
+            });

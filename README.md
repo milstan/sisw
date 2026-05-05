@@ -17,7 +17,7 @@
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
-| [**Milan Stanisavljevic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
+| [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
 <!-- TALKS:END -->
 
 This section is auto-regenerated from `_data/talks.yml` by `.github/workflows/submission-to-pr.yml` on each merge — don't edit between the markers by hand.
@@ -58,6 +58,13 @@ If validation fails, the bot comments on the issue listing what needs fixing and
 
 **Summary length cap.** Talk summaries are capped at 600 characters at submission time. The homepage table shows the first sentence (up to ~220 chars) with a clickable `[…]` linking back to the originating issue for the full text.
 
+**Email-via-calendar-RSVP** (no form, no separate collection). When a PR is merged, a follow-up workflow comments on the originating issue with the event's Google Calendar RSVP link. Speakers who RSVP Yes while signed in to Google share their email with the organizer (standard Google Calendar attendee-list behavior). To enable this:
+
+1. Create one Google Calendar event for the workshop (date TBA is fine — updatable later). On the event, enable **Guest permissions → "Modify event" off, "Invite others" off**, and make it visible via a shareable link with **public RSVP** allowed.
+2. Copy the event URL.
+3. In **Settings → Secrets and variables → Actions → Variables**, add a new repository variable named `SISW_EVENT_URL` with that URL as the value.
+4. Done. The next merged PR triggers the post-merge comment with the link; future ones too. Until the variable is set, the bot just posts a generic "approved" comment.
+
 ## Approving / rejecting submissions
 
 - **Approve:** open the PR, give it a quick read, click Merge. Done.
@@ -92,6 +99,7 @@ No tokens, no secrets, no other config.
 | `.github/ISSUE_TEMPLATE/talk-submission.yml` | The submission form fields. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Disables blank issues so people use the form. |
 | `.github/workflows/submission-to-pr.yml` | Issue → validate → dedup → append-to-yml + regenerate-README → PR. |
+| `.github/workflows/post-merge-rsvp.yml` | Fires when a `talk-submission` PR is merged; posts an "approved + RSVP here" comment on the originating issue. The RSVP link comes from repo variable `SISW_EVENT_URL`; speakers RSVP-ing Yes share their Google email with the event organizer. |
 
 ## What `_data/talks.yml` looks like
 
@@ -99,7 +107,7 @@ Each merged PR appends one entry; this is the public data contract:
 
 ```yaml
 - first: Milan
-  last: Stanisavljevic
+  last: Stankovic
   domain: leadbay.ai
   repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
   twitter: milstan                   # X/Twitter handle, optional, no @ prefix

@@ -2,7 +2,7 @@
 # .github/workflows/submission-to-pr.yml workflow when an organizer merges.
 # Don't edit by hand unless you're correcting a typo.
 - first: Milan
-  last: Stanisavljevic
+  last: Stankovic
   domain: leadbay.ai
   repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
   twitter: milstan
