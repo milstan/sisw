@@ -17,7 +17,7 @@
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
-| [**Milan Stanisavljevic**](https://github.com/milstan) (@milstan)<br>[leadbay.ai](https://leadbay.ai) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
+| [**Milan Stanisavljevic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
 <!-- TALKS:END -->
 
 This section is auto-regenerated from `_data/talks.yml` by `.github/workflows/submission-to-pr.yml` on each merge — don't edit between the markers by hand.
@@ -102,6 +102,7 @@ Each merged PR appends one entry; this is the public data contract:
   last: Stanisavljevic
   domain: leadbay.ai
   repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
+  twitter: milstan                   # X/Twitter handle, optional, no @ prefix
   summary: Treat prompt authoring as a learning problem...
   submitter_github: milstan         # used by the dedup check
   submitted_at: '2026-05-05T19:28:47Z'

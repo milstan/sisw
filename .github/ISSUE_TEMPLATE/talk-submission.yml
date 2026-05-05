@@ -47,6 +47,15 @@ body:
     validations:
       required: false
 
+  - type: input
+    id: twitter
+    attributes:
+      label: Twitter / X handle (optional)
+      description: Your handle on X/Twitter, if you'd like it linked from your row. Just the handle (with or without `@`); also accepts a full `x.com/...` or `twitter.com/...` URL.
+      placeholder: yourhandle
+    validations:
+      required: false
+
   - type: textarea
     id: summary
     attributes:

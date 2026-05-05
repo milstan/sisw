@@ -108,6 +108,31 @@ jobs:
                       "Got: `" + repo_raw + "`"
                   )
 
+          # Twitter/X handle is OPTIONAL. Accept @handle, plain handle, or
+          # full URL (x.com or twitter.com). Persist just the handle.
+          twitter_raw = (p.get('twitter') or '').strip()
+          twitter = ''
+          if twitter_raw:
+              t = twitter_raw
+              for prefix in ('https://', 'http://'):
+                  if t.startswith(prefix):
+                      t = t[len(prefix):]
+              if t.startswith('www.'):
+                  t = t[4:]
+              for prefix in ('twitter.com/', 'x.com/'):
+                  if t.startswith(prefix):
+                      t = t[len(prefix):]
+              t = t.lstrip('@').rstrip('/').split('/', 1)[0].split('?', 1)[0]
+              if re.match(r'^[A-Za-z0-9_]{1,15}$', t):
+                  twitter = t
+              else:
+                  errs.append(
+                      "`twitter` doesn't look like a Twitter/X handle "
+                      "(1-15 alphanumeric or underscore). Use just your "
+                      "handle (with or without `@`), or leave blank. "
+                      f"Got: `{twitter_raw}`"
+                  )
+
           has_errors = "true" if errs else "false"
           if errs:
               body_lines = [
@@ -129,6 +154,7 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write(f"has_errors={has_errors}\n")
               f.write(f"repo_canonical={repo_canonical}\n")
+              f.write(f"twitter_canonical={twitter}\n")
               f.write(f"body<<{delim}\n{body}\n{delim}\n")
           PY
 
@@ -290,6 +316,7 @@ jobs:
           ISSUE: ${{ github.event.issue.number }}
           AUTHOR: ${{ github.event.issue.user.login }}
           REPO_CANONICAL: ${{ steps.validate.outputs.repo_canonical }}
+          TWITTER_CANONICAL: ${{ steps.validate.outputs.twitter_canonical }}
         run: |
           python3 <<'PY'
           import json, os, datetime, pathlib, re, yaml
@@ -309,11 +336,13 @@ jobs:
           domain = domain.rstrip('/')
           # Repo is optional; canonical form is empty string when blank.
           repo_canonical = (os.environ.get('REPO_CANONICAL') or '').strip().rstrip('/')
+          twitter_canonical = (os.environ.get('TWITTER_CANONICAL') or '').strip()
           entry = {
               'first':            p['first'].strip(),
               'last':             p['last'].strip(),
               'domain':           domain,
               'repo':             repo_canonical,
+              'twitter':          twitter_canonical,
               'summary':          p['summary'].strip(),
               'submitter_github': os.environ['AUTHOR'],
               'submitted_at':     datetime.datetime.now(datetime.UTC).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -363,10 +392,12 @@ jobs:
                   truncated = text[:cut].rstrip().rstrip('.,;:!?')
               return f"{md_escape(truncated)} […](https://github.com/{repo_full}/issues/{issue_num})"
 
-          # Two-column layout: speaker bio (name + handle + domain + project
+          # Two-column layout: speaker bio (name + domain + 𝕏 + project
           # icon, stacked) on the left, talk summary on the right. Gives
           # the summary roughly 70% of the table width which reads naturally
-          # on github.com without forcing horizontal scroll.
+          # on github.com without forcing horizontal scroll. The bold name
+          # is itself the link to the GitHub profile, so we don't repeat
+          # the @handle alongside.
           rows = ["| Speaker | Talk |",
                   "|---|---|"]
           for t in existing:
@@ -377,19 +408,22 @@ jobs:
               gh    = (t.get('submitter_github') or '').strip()
               dom   = (t.get('domain') or '').strip()
               repo  = (t.get('repo') or '').strip()
+              tw    = (t.get('twitter') or '').strip()
               summ  = (t.get('summary') or '').strip()
               issue = t.get('issue')
 
-              # Line 1: bold name (linked to GitHub profile if known) + (@handle).
+              # Line 1: bold name. Linked to the GitHub profile if known —
+              # the link IS the @handle reference, no need to repeat it.
               full_name = f"{md_escape(first)} {md_escape(last)}".strip()
-              if gh:
-                  line1 = f"[**{full_name}**](https://github.com/{gh}) (@{gh})"
-              else:
-                  line1 = f"**{full_name}**"
-              # Line 2: domain · 🔗 (icon only when repo present).
+              line1 = f"[**{full_name}**](https://github.com/{gh})" if gh else f"**{full_name}**"
+              # Line 2: domain · 𝕏 · 🔗 — each segment present only when the
+              # corresponding field is set. Skip the line entirely if all
+              # three are absent.
               parts = []
               if dom:
                   parts.append(f"[{md_escape(dom)}](https://{dom})")
+              if tw:
+                  parts.append(f"[𝕏](https://x.com/{tw})")
               if repo:
                   parts.append(f"[🔗]({repo})")
               line2 = " · ".join(parts)

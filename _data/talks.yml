@@ -5,6 +5,7 @@
   last: Stanisavljevic
   domain: leadbay.ai
   repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
+  twitter: milstan
   summary: 'Treat prompt authoring as a learning problem: feed in examples of desired
     output, and the LLM both analyses dimensions of quality and iteratively refines
     a candidate prompt against them, keeping the best-of-N. The key insight is that
