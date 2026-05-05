@@ -14,12 +14,21 @@ title: SISW
     section  { width: 780px; }
   }
   table.talks { table-layout: fixed; width: 100%; }
-  table.talks th, table.talks td { vertical-align: top; word-wrap: break-word; }
+  table.talks th, table.talks td { vertical-align: top; word-wrap: break-word; overflow-wrap: anywhere; }
   table.talks th:nth-child(1), table.talks td:nth-child(1) { width: 18%; }
   table.talks th:nth-child(2), table.talks td:nth-child(2) { width: 16%; }
   table.talks th:nth-child(3), table.talks td:nth-child(3) { width: 22%; word-break: break-all; }
   table.talks th:nth-child(4), table.talks td:nth-child(4) { width: 44%; }
-  table.talks td:nth-child(1) { white-space: nowrap; }
+
+  /* Below ~720px the minimal theme drops to a single-column flow. The
+     four-col table still fits in the viewport but speaker names need to
+     wrap (no nowrap), and the summary column shouldn't dominate.
+     Stacked-card-on-mobile would be nicer; the row layout keeps the
+     spec's "table" promise. */
+  @media (max-width: 720px) {
+    table.talks th:nth-child(4), table.talks td:nth-child(4) { width: 36%; }
+    table.talks th:nth-child(1), table.talks td:nth-child(1) { width: 22%; }
+  }
 </style>
 
 # SISW
