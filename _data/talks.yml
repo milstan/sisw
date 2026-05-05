@@ -18,3 +18,14 @@
   submitter_github: _test_placeholder_
   submitted_at: '2026-05-05T19:28:47Z'
   issue: 1
+- first: Milan
+  last: Stanisavljevic
+  domain: leadbay.ai
+  repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
+  summary: PR template smoke test (iter 8). Subagent flagged that the rich PR body
+    template hadn't been live-rendered. This issue exists to materialize the new PR
+    body in production so we can verify it renders correctly. Will be closed without
+    merge.
+  submitter_github: milstan
+  submitted_at: '2026-05-05T20:33:39Z'
+  issue: 9
