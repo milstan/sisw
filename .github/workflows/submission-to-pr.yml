@@ -57,41 +57,56 @@ jobs:
           for k in ('first', 'last', 'domain', 'summary'):
               if not (p.get(k) or '').strip():
                   errs.append(f"`{k}` is empty")
-          repo_raw = (p.get('repo') or '').strip()
 
-          # Strip URL fragment + .git suffix before pattern checks.
-          repo = repo_raw.split('#', 1)[0]
-          if repo.endswith('.git'):
-              repo = repo[:-4]
-
-          # Accept tolerant shapes for github.com (any extra path is OK and
-          # will be trimmed below); gist.github.com gets the same treatment
-          # for the optional revision-SHA suffix so the table renders the
-          # canonical `<user>/<id>` instead of `<user>/<id>/<revision-sha>`.
-          gh_re   = re.compile(r'^https?://github\.com/([^/\s]+)/([^/\s]+)(/[^\s]*)?/?$')
-          gist_re = re.compile(r'^https?://gist\.github\.com/([^/\s]+)/([A-Za-z0-9]+)(/[A-Za-z0-9]+)?/?$')
-
-          gh_match   = gh_re.match(repo)
-          gist_match = gist_re.match(repo)
-
-          repo_canonical = repo
-          if gh_match:
-              # Normalize to https://github.com/<user>/<repo> (drop tree/blob/commit/etc.)
-              user = gh_match.group(1)
-              name = gh_match.group(2).rstrip('/')
-              repo_canonical = f"https://github.com/{user}/{name}"
-          elif gist_match:
-              # Normalize to https://gist.github.com/<user>/<id> (drop revision SHA).
-              user = gist_match.group(1)
-              gid  = gist_match.group(2)
-              repo_canonical = f"https://gist.github.com/{user}/{gid}"
-          else:
+          # Summary length cap. Issue Forms can't enforce this client-side,
+          # so we reject server-side and tell the user the actual length so
+          # they know how much to trim.
+          SUMMARY_MAX = 600
+          summary = (p.get('summary') or '').strip()
+          if summary and len(summary) > SUMMARY_MAX:
               errs.append(
-                  "`repo` must be a GitHub repo or gist URL. "
-                  "Examples: `https://github.com/octocat/Hello-World` "
-                  "or `https://gist.github.com/octocat/abc123def456`. "
-                  "Got: `" + (repo_raw or "<empty>") + "`"
+                  f"`summary` is too long ({len(summary)} chars; max {SUMMARY_MAX}). "
+                  "Trim to ~50-100 words; the homepage table only shows the "
+                  "first sentence anyway, with a link back here for the rest."
               )
+
+          # Repo is OPTIONAL. Validate format only when provided.
+          repo_raw = (p.get('repo') or '').strip()
+          repo_canonical = ''
+          if repo_raw:
+              # Strip URL fragment + .git suffix before pattern checks.
+              repo = repo_raw.split('#', 1)[0]
+              if repo.endswith('.git'):
+                  repo = repo[:-4]
+
+              # Accept tolerant shapes for github.com (any extra path is OK and
+              # will be trimmed below); gist.github.com gets the same treatment
+              # for the optional revision-SHA suffix so the table renders the
+              # canonical `<user>/<id>` instead of `<user>/<id>/<revision-sha>`.
+              gh_re   = re.compile(r'^https?://github\.com/([^/\s]+)/([^/\s]+)(/[^\s]*)?/?$')
+              gist_re = re.compile(r'^https?://gist\.github\.com/([^/\s]+)/([A-Za-z0-9]+)(/[A-Za-z0-9]+)?/?$')
+
+              gh_match   = gh_re.match(repo)
+              gist_match = gist_re.match(repo)
+
+              if gh_match:
+                  # Normalize to https://github.com/<user>/<repo> (drop tree/blob/commit/etc.)
+                  user = gh_match.group(1)
+                  name = gh_match.group(2).rstrip('/')
+                  repo_canonical = f"https://github.com/{user}/{name}"
+              elif gist_match:
+                  # Normalize to https://gist.github.com/<user>/<id> (drop revision SHA).
+                  user = gist_match.group(1)
+                  gid  = gist_match.group(2)
+                  repo_canonical = f"https://gist.github.com/{user}/{gid}"
+              else:
+                  errs.append(
+                      "`repo` must be a GitHub repo or gist URL "
+                      "(or leave it blank — the field is optional). "
+                      "Examples: `https://github.com/octocat/Hello-World` "
+                      "or `https://gist.github.com/octocat/abc123def456`. "
+                      "Got: `" + repo_raw + "`"
+                  )
 
           has_errors = "true" if errs else "false"
           if errs:
@@ -292,7 +307,8 @@ jobs:
               if domain.startswith(prefix):
                   domain = domain[len(prefix):]
           domain = domain.rstrip('/')
-          repo_canonical = (os.environ.get('REPO_CANONICAL') or p['repo']).strip().rstrip('/')
+          # Repo is optional; canonical form is empty string when blank.
+          repo_canonical = (os.environ.get('REPO_CANONICAL') or '').strip().rstrip('/')
           entry = {
               'first':            p['first'].strip(),
               'last':             p['last'].strip(),
@@ -366,7 +382,9 @@ jobs:
               startup_cell = f"[{md_escape(dom)}](https://{dom})" if dom else ""
               # Project cell is just a 🔗 icon linked to the repo / gist —
               # keeps the column narrow; the talk is the content, not the URL.
-              repo_cell    = f"[🔗]({repo})" if repo else ""
+              # The field is optional, so an empty cell is rendered as an
+              # em-dash placeholder so the table reads cleanly.
+              repo_cell    = f"[🔗]({repo})" if repo else "—"
               summary_cell = truncate_summary(summ, issue) if issue else md_escape(summ)
               rows.append(f"| {speaker_cell} | {startup_cell} | {repo_cell} | {summary_cell} |")
 
@@ -423,7 +441,7 @@ jobs:
             |---|---|
             | **Speaker** | ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }} |
             | **Startup** | <https://${{ fromJSON(steps.parse.outputs.jsonString).domain }}> |
-            | **Repo** | ${{ steps.validate.outputs.repo_canonical }} |
+            | **Repo** | ${{ steps.validate.outputs.repo_canonical || '— (none)' }} |
 
             > ${{ fromJSON(steps.parse.outputs.jsonString).summary }}
 

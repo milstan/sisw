@@ -54,7 +54,9 @@ If validation fails, the bot comments on the issue listing what needs fixing and
 2. another open issue with the `talk-submission` label by the same GitHub user (a pending submission),
 3. an open PR with the `talk-submission` label whose body credits the same `@author` (a pending review).
 
-**Gist URLs are accepted.** The "GitHub repo to share" field accepts both `https://github.com/<user>/<repo>` and `https://gist.github.com/<user>/<id>`. Gists render as `<user>/<id>` in the table.
+**Gist URLs are accepted; repo is optional.** The "GitHub repo or gist to share" field is optional and accepts both `https://github.com/<user>/<repo>` and `https://gist.github.com/<user>/<id>`. The table shows a 🔗 icon linking to the repo/gist; rows without one render an em-dash.
+
+**Summary length cap.** Talk summaries are capped at 600 characters at submission time. The homepage table shows the first sentence (up to ~220 chars) with a clickable `[…]` linking back to the originating issue for the full text.
 
 ## Approving / rejecting submissions
 

@@ -41,17 +41,17 @@ body:
   - type: input
     id: repo
     attributes:
-      label: GitHub repo to share
-      description: Full URL of a repo you'd like to share with the community. Gist URLs (`https://gist.github.com/<user>/<id>`) are also accepted.
+      label: GitHub repo or gist to share (optional)
+      description: A repo or gist URL related to your talk. Leave blank if you don't have one to share. Accepts `https://github.com/<user>/<repo>` or `https://gist.github.com/<user>/<id>`.
       placeholder: https://github.com/your-handle/your-repo
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: summary
     attributes:
       label: Talk summary
-      description: A short paragraph (~3–6 sentences) on what you're building and what you've learned.
+      description: A short paragraph on what you're building and what you've learned. Keep it tight — ~50-100 words (max ~600 characters); the table on the homepage shows the first sentence with a "more" link to this issue, so put the most interesting thread first.
       placeholder: |
         We're building X because Y. The hardest thing so far has been Z, and what we learned is...
     validations:
