@@ -43,7 +43,7 @@ If validation fails, the bot comments on the issue listing what needs fixing and
 
 **Twitter/X handle is optional.** Speakers can paste a handle (with or without `@`) or a full `x.com/...` / `twitter.com/...` URL. Workflow normalizes to just the handle and validates against Twitter's actual rule (1-15 alphanumeric or underscore). When set, the speaker cell renders a `𝕏` icon linked to `x.com/<handle>`.
 
-**Summary length cap.** Talk summaries are capped at 600 characters at submission time. The homepage table shows the first sentence (up to ~320 chars) with a clickable `[…]` linking back to the originating issue for the full text.
+**Summary length cap.** Talk summaries are capped at 600 characters at submission time. The homepage table shows up to ~500 chars of the summary; longer summaries truncate at the nearest sentence boundary with a clickable `[…]` linking back to the originating issue for the full text.
 
 ## Email-via-RSVP
 

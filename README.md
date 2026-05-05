@@ -29,7 +29,7 @@ We invite submissions of **5-minute talks**, followed by a few questions and min
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
-| [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | Treat prompt authoring as a learning problem: feed in examples of desired output, and the LLM both analyses dimensions of quality and iteratively refines a candidate prompt against them, keeping the best-of-N. […](https://github.com/milstan/sisw/issues/1) |
+| [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | A coding agent using a thinking frontier model can iterate overnight and deliver a perfected software output with very limited instructions. It seems to work best when the agent can perform a qualitative assessment of the work, and score it on some scale that becomes a reward function the agent optimizes through iterations (like gradient descent). |
 <!-- TALKS:END -->
 
 <!--

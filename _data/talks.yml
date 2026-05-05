@@ -6,16 +6,11 @@
   domain: leadbay.ai
   repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
   twitter: milstan
-  summary: 'Treat prompt authoring as a learning problem: feed in examples of desired
-    output, and the LLM both analyses dimensions of quality and iteratively refines
-    a candidate prompt against them, keeping the best-of-N. The key insight is that
-    the model discovers what to optimise for — dimensions you wouldn''t think to specify
-    — and grounds evaluation in your examples instead of self-assessment. We''ve used
-    this in production at Leadbay for writing-style learning and cold-start ICP descriptions;
-    it replaces hand-written prompts with learned ones, no fine-tuning, no GPU. I''ll
-    walk through the protocol (analyse → generate → score → refine), share what surprised
-    us (the anti-pattern list ended up being as load-bearing as the prompt itself),
-    and compare it to few-shot, fine-tuning, and DSPy/OPRO.'
+  summary: A coding agent using a thinking frontier model can iterate overnight and
+    deliver a perfected software output with very limited instructions. It seems to
+    work best when the agent can perform a qualitative assessment of the work, and
+    score it on some scale that becomes a reward function the agent optimizes through
+    iterations (like gradient descent).
   submitter_github: milstan
   submitted_at: '2026-05-05T19:28:47Z'
   issue: 1

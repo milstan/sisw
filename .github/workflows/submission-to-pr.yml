@@ -369,7 +369,7 @@ jobs:
               # table cell. Newlines collapse to spaces inside a cell.
               return text.replace('\\', '\\\\').replace('|', '\\|').replace('\n', ' ')
 
-          def truncate_summary(text, issue_num, max_chars=320):
+          def truncate_summary(text, issue_num, max_chars=500):
               # Keep the table compact. Take the first sentence (up to the
               # first ./?/! followed by space) if it fits in max_chars,
               # otherwise hard-cut at the nearest word boundary. Append a
