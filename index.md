@@ -3,6 +3,25 @@ layout: default
 title: SISW
 ---
 
+<style>
+  /* The minimal theme renders content into a 500px-wide section, which
+     squeezes the talks table's summary column into a tall narrow strip.
+     Widen the wrapper + section at desktop widths so the four columns get
+     reasonable proportions, then constrain each column so a long summary
+     doesn't push everything else off-screen. */
+  @media (min-width: 1100px) {
+    .wrapper { width: 1100px; }
+    section  { width: 780px; }
+  }
+  table.talks { table-layout: fixed; width: 100%; }
+  table.talks th, table.talks td { vertical-align: top; word-wrap: break-word; }
+  table.talks th:nth-child(1), table.talks td:nth-child(1) { width: 18%; }
+  table.talks th:nth-child(2), table.talks td:nth-child(2) { width: 16%; }
+  table.talks th:nth-child(3), table.talks td:nth-child(3) { width: 22%; word-break: break-all; }
+  table.talks th:nth-child(4), table.talks td:nth-child(4) { width: 44%; }
+  table.talks td:nth-child(1) { white-space: nowrap; }
+</style>
+
 # SISW
 
 **Self-Improving Software Workshop** — a gathering of people building things. Each speaker gives a short talk about what they're working on and what they've learned.
@@ -17,7 +36,7 @@ Submissions open as a GitHub issue, get auto-converted into a PR, and appear in 
 
 {% assign talks = site.data.talks %}
 {% if talks and talks.size > 0 %}
-<table>
+<table class="talks">
   <thead>
     <tr>
       <th>Speaker</th>
