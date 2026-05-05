@@ -5,11 +5,11 @@ title: SISW
 
 # SISW
 
-A gathering of people building things. Each speaker gives a short talk about what they're working on and what they've learned.
+**Self-Improving Software Workshop** — a gathering of people building things. Each speaker gives a short talk about what they're working on and what they've learned.
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
 
-Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges.
+Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges. One talk per speaker; gist URLs are welcome.
 
 ---
 
@@ -38,5 +38,5 @@ Submissions open as a GitHub issue, get auto-converted into a PR, and appear in 
   </tbody>
 </table>
 {% else %}
-*No talks yet — be the first.*
+*No talks yet — be the first to share what you're building.*
 {% endif %}
