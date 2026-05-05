@@ -37,7 +37,7 @@ title: SISW
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
 
-Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges. One talk per speaker; gist URLs are welcome.
+*Short talks (~10 minutes), bring slides or a live demo. Submissions open as a GitHub issue, get auto-converted into a PR, and appear in the table below once an organizer merges. One talk per speaker; gist URLs are welcome.*
 
 ---
 
