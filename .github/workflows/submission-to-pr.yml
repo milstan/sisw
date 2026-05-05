@@ -47,9 +47,10 @@ jobs:
           gist_re = r'^https?://gist\.github\.com/[^/\s]+/[A-Za-z0-9]+(/[A-Za-z0-9]+)?/?$'
           if not (re.match(repo_re, repo) or re.match(gist_re, repo)):
               errs.append(
-                  "`repo` must be either a GitHub repo URL "
-                  "(`https://github.com/<user>/<repo>`) or a gist URL "
-                  "(`https://gist.github.com/<user>/<id>`). Got: `" + (repo or "<empty>") + "`"
+                  "`repo` must be a GitHub repo or gist URL. "
+                  "Examples: `https://github.com/octocat/Hello-World` "
+                  "or `https://gist.github.com/octocat/abc123def456`. "
+                  "Got: `" + (repo or "<empty>") + "`"
               )
           has_errors = "true" if errs else "false"
           if errs:
@@ -268,15 +269,16 @@ jobs:
           body: |
             Submitted via #${{ github.event.issue.number }} by @${{ github.event.issue.user.login }}.
 
-            **Startup:** https://${{ fromJSON(steps.parse.outputs.jsonString).domain }}
-            **Repo:** ${{ fromJSON(steps.parse.outputs.jsonString).repo }}
+            | Field | Value |
+            |---|---|
+            | **Speaker** | ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }} |
+            | **Startup** | <https://${{ fromJSON(steps.parse.outputs.jsonString).domain }}> |
+            | **Repo** | ${{ fromJSON(steps.parse.outputs.jsonString).repo }} |
+
+            > ${{ fromJSON(steps.parse.outputs.jsonString).summary }}
 
             ---
 
-            ${{ fromJSON(steps.parse.outputs.jsonString).summary }}
-
-            ---
-
-            **Merge to approve.** This will close the original submission issue.
+            **Approve = merge this PR** (closes #${{ github.event.issue.number }} and rebuilds the homepage). **Reject = close this PR** with a brief comment. **Edit before approving:** push commits to `talk/${{ github.event.issue.number }}` (e.g. fix a typo in the summary), then merge.
 
             Closes #${{ github.event.issue.number }}

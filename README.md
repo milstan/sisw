@@ -26,7 +26,11 @@ GitHub Pages rebuilds → new row appears in the "Who's coming" table.
 
 If validation fails, the bot comments on the issue listing what needs fixing and labels it `needs-fixes`. Submitter closes and reopens with corrections.
 
-**One talk per speaker.** A second submission by the same GitHub user is detected and rejected at the issue stage — no PR is created, the issue is labeled `duplicate-submission`, and the bot comments with a link to the speaker's existing submission (whether it's already in `_data/talks.yml`, an open issue still pending review, or an open PR awaiting merge).
+**One talk per speaker.** A second submission by the same GitHub user is detected and rejected at the issue stage — no PR is created, the issue is labeled `duplicate-submission`, and the bot comments with a link to the speaker's existing submission. The dedup check looks in three places, in priority order:
+
+1. an entry in `_data/talks.yml` whose `submitter_github` matches (an approved talk),
+2. another open issue with the `talk-submission` label by the same GitHub user (a pending submission),
+3. an open PR with the `talk-submission` label whose body credits the same `@author` (a pending review).
 
 **Gist URLs are accepted.** The "GitHub repo to share" field accepts both `https://github.com/<user>/<repo>` and `https://gist.github.com/<user>/<id>`. Gists render as `<user>/<id>` in the table.
 
@@ -51,8 +55,17 @@ bundle exec jekyll serve
 
 - **Approve:** open the PR, give it a quick read, click Merge. Done.
 - **Reject:** close the PR with a comment. Optionally close the originating issue too.
-- **Edit before approving:** push commits to the `talk/<issue#>` branch (e.g. fix a typo in the summary), then merge. Pages rebuilds automatically on merge to `main`.
-- **Duplicate label:** if the bot mistakenly flagged a submission as a duplicate, remove the `duplicate-submission` label and re-trigger the workflow by editing then re-saving the issue, or simply ask the submitter to close + reopen with the correction.
+- **Edit before approving** (worked example): say the speaker typo'd `leadbay.io` → should be `leadbay.ai`. Click the "Files changed" tab on the PR; or pull the branch locally:
+
+  ```bash
+  git fetch origin
+  git checkout talk/12        # the PR branch — same number as the issue
+  sed -i '' 's|leadbay\.io|leadbay.ai|' _data/talks.yml
+  git commit -am "Fix speaker domain typo" && git push
+  ```
+
+  The PR auto-updates; click Merge. Pages rebuilds within ~60s.
+- **Duplicate label remediation:** if the bot incorrectly flagged a submission as duplicate, remove the `duplicate-submission` label, ask the submitter to close + reopen with the corrected fields. The workflow runs on `opened` events only, so re-applying the label or re-editing won't re-trigger.
 
 ## File map
 
@@ -64,6 +77,23 @@ bundle exec jekyll serve
 | `.github/ISSUE_TEMPLATE/talk-submission.yml` | The submission form fields. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Disables blank issues so people use the form. |
 | `.github/workflows/submission-to-pr.yml` | Issue → validate → dedup → append → PR. |
+
+## What `_data/talks.yml` looks like
+
+Each merged PR appends one entry; this is the public data contract:
+
+```yaml
+- first: Milan
+  last: Stanisavljevic
+  domain: leadbay.ai
+  repo: https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce
+  summary: Treat prompt authoring as a learning problem...
+  submitter_github: milstan         # used by the dedup check
+  submitted_at: '2026-05-05T19:28:47Z'
+  issue: 1                           # links back to the originating issue
+```
+
+The file is human-readable and unicode-safe (`yaml.safe_dump(..., allow_unicode=True)`); it can be hand-edited by an organizer to fix a typo, but new entries should always come through a merged PR so the audit trail (issue → PR → merge) stays intact.
 
 ## Contacting submitters
 
