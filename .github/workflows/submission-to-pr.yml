@@ -1,0 +1,133 @@
+name: Talk submission → PR
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  process:
+    if: contains(github.event.issue.labels.*.name, 'talk-submission')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse issue form
+        id: parse
+        uses: stefanbuck/github-issue-parser@v3
+        with:
+          template-path: .github/ISSUE_TEMPLATE/talk-submission.yml
+
+      - name: Install Python deps
+        run: pip install --quiet pyyaml
+
+      - name: Validate fields
+        id: validate
+        env:
+          PAYLOAD: ${{ steps.parse.outputs.jsonString }}
+        run: |
+          python3 <<'PY'
+          import json, os, re
+          p = json.loads(os.environ['PAYLOAD'])
+          errs = []
+          for k in ('first', 'last', 'domain', 'summary'):
+              if not (p.get(k) or '').strip():
+                  errs.append(f"`{k}` is empty")
+          repo = (p.get('repo') or '').strip()
+          if not re.match(r'^https?://github\.com/[^/\s]+/[^/\s]+/?$', repo):
+              errs.append("`repo` must be a GitHub URL like https://github.com/user/repo")
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write("errors=" + " | ".join(errs) + "\n")
+          PY
+
+      - name: Comment on validation failure
+        if: steps.validate.outputs.errors != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const errs = `${{ steps.validate.outputs.errors }}`.split(' | ').filter(Boolean);
+            const body = [
+              "Thanks for submitting! A few things need fixing before we can review:",
+              "",
+              ...errs.map(e => `- ${e}`),
+              "",
+              "Issues can't be edited and re-parsed cleanly, so please **close this issue and open a new one** with corrections. Sorry for the friction!"
+            ].join("\n");
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: context.issue.number,
+              labels: ['needs-fixes'],
+            });
+
+      - name: Append entry to _data/talks.yml
+        if: steps.validate.outputs.errors == ''
+        env:
+          PAYLOAD: ${{ steps.parse.outputs.jsonString }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          python3 <<'PY'
+          import json, os, datetime, pathlib, yaml
+          p = json.loads(os.environ['PAYLOAD'])
+          path = pathlib.Path('_data/talks.yml')
+          existing = []
+          if path.exists():
+              loaded = yaml.safe_load(path.read_text())
+              if isinstance(loaded, list):
+                  existing = loaded
+          domain = p['domain'].strip()
+          for prefix in ('https://', 'http://'):
+              if domain.startswith(prefix):
+                  domain = domain[len(prefix):]
+          domain = domain.rstrip('/')
+          entry = {
+              'first':        p['first'].strip(),
+              'last':         p['last'].strip(),
+              'domain':       domain,
+              'repo':         p['repo'].strip().rstrip('/'),
+              'summary':      p['summary'].strip(),
+              'submitted_at': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+              'issue':        int(os.environ['ISSUE']),
+          }
+          existing.append(entry)
+          path.parent.mkdir(parents=True, exist_ok=True)
+          header = (
+              "# Approved talk submissions. Append-only — added via PRs from the\n"
+              "# .github/workflows/submission-to-pr.yml workflow when an organizer merges.\n"
+              "# Don't edit by hand unless you're correcting a typo.\n"
+          )
+          dumped = yaml.safe_dump(existing, sort_keys=False, allow_unicode=True, default_flow_style=False)
+          path.write_text(header + dumped)
+          PY
+
+      - name: Open PR
+        if: steps.validate.outputs.errors == ''
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: talk/${{ github.event.issue.number }}
+          commit-message: "Add talk: ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }}"
+          title: "Talk submission: ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }}"
+          labels: talk-submission
+          body: |
+            Submitted via #${{ github.event.issue.number }} by @${{ github.event.issue.user.login }}.
+
+            **Startup:** https://${{ fromJSON(steps.parse.outputs.jsonString).domain }}
+            **Repo:** ${{ fromJSON(steps.parse.outputs.jsonString).repo }}
+
+            ---
+
+            ${{ fromJSON(steps.parse.outputs.jsonString).summary }}
+
+            ---
+
+            **Merge to approve.** This will close the original submission issue.
+
+            Closes #${{ github.event.issue.number }}

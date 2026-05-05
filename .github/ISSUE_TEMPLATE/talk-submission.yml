@@ -1,0 +1,58 @@
+name: Submit a talk
+description: Propose a short talk for the event.
+title: "Talk: <your name>"
+labels: ["talk-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a talk! A few things to know:
+
+        - This issue and the resulting PR are **publicly visible**.
+        - We'll contact you through this issue or your GitHub profile — no email field needed.
+        - When an organizer merges the PR, your talk appears on the event page.
+        - If something needs fixing, the bot will comment here — please close this issue and submit a new one with corrections.
+
+  - type: input
+    id: first
+    attributes:
+      label: First name
+      placeholder: Jane
+    validations:
+      required: true
+
+  - type: input
+    id: last
+    attributes:
+      label: Last name
+      placeholder: Doe
+    validations:
+      required: true
+
+  - type: input
+    id: domain
+    attributes:
+      label: Startup domain
+      description: Just the domain — no `https://`, no trailing slash.
+      placeholder: example.com
+    validations:
+      required: true
+
+  - type: input
+    id: repo
+    attributes:
+      label: GitHub repo to share
+      description: Full URL of a repo you'd like to share with the community. Gist URLs (`https://gist.github.com/<user>/<id>`) are also accepted.
+      placeholder: https://github.com/your-handle/your-repo
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Talk summary
+      description: A short paragraph (~3–6 sentences) on what you're building and what you've learned.
+      placeholder: |
+        We're building X because Y. The hardest thing so far has been Z, and what we learned is...
+    validations:
+      required: true
