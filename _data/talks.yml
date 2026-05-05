@@ -15,6 +15,6 @@
     walk through the protocol (analyse → generate → score → refine), share what surprised
     us (the anti-pattern list ended up being as load-bearing as the prompt itself),
     and compare it to few-shot, fine-tuning, and DSPy/OPRO.'
-  submitter_github: milstan
+  submitter_github: _test_placeholder_
   submitted_at: '2026-05-05T19:28:47Z'
   issue: 1
