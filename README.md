@@ -16,7 +16,7 @@ So we're organising this gathering of like-minded (call us crazy) people trying 
 We invite submissions of **5-minute talks** (including Q&A - nothing fancy - just present what you're doing) and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
 
 > **When:** May 21, 2026 · 6pm PDT
-> **Where:** San Francisco, California · venue TBD
+> **Where:** San Francisco, California · Parrot office
 
 **Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & [Erik Dahl](https://github.com/erikd234) ([Parrot](https://parrotapp.com))
 
