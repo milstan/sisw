@@ -14,3 +14,23 @@
   submitter_github: milstan
   submitted_at: '2026-05-05T19:28:47Z'
   issue: 1
+- first: Erik
+  last: Dahl
+  domain: parrotapp.com
+  repo: ''
+  twitter: ''
+  summary: 'The thesis
+
+
+    A lot of devs right now are getting good at running 5–10 parallel Claudes — checking
+    in on each one, unsticking it, answering its questions, ferrying context between
+    them. It works, but the human ends up as a router for the bots more than an engineer.
+
+
+    The bet I''m making with Parrot''s own version of conductor / AI coding orchestrator
+    is that an AI should be doing that routing, not me. I want to show up at the bookends
+    — here''s what we''re building and why at the start, ship it or don''t at the
+    end — and have the middle run on its own.'
+  submitter_github: erikd234
+  submitted_at: '2026-05-07T23:21:07Z'
+  issue: 12
