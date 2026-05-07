@@ -13,10 +13,14 @@ Issue Form opens on github.com/milstan/sisw  (submitter needs a GitHub account)
         ▼
 GitHub Action `submission-to-pr` runs:
    • parses the issue form fields
-   • validates the repo URL (optional) and summary length (≤600 chars)
-   • dedups against approved talks + open issues + open PRs
+   • auto-corrects: trims over-length summary at sentence boundary; drops
+     malformed repo/Twitter URLs; falls back to GH handle if name is blank
+   • dedups against approved talks + open issues + open PRs (this DOES
+     still block — one submission per speaker)
    • appends an entry to _data/talks.yml on a new branch `talk/<issue#>`
-   • opens a PR titled "Talk submission: <name>"
+   • opens a PR titled "Talk submission: <name>"; PR body lists any
+     auto-corrections so the organizer can edit on the branch before
+     merging
         │
         ▼
 Organizer reviews PR. Merge = approval.
@@ -29,7 +33,7 @@ GitHub Action `post-merge-rsvp` posts a comment on the originating issue
 with the Luma RSVP link, capturing email via Luma's RSVP form.
 ```
 
-If validation fails, the bot comments on the issue listing what needs fixing and labels it `needs-fixes`. Submitter closes and reopens with corrections.
+**Validation never blocks.** The workflow auto-corrects malformed input rather than rejecting it. When auto-corrections happen, the bot comments on the issue summarizing what it did and points to the PR. Organizer can override anything by editing on the `talk/<issue#>` branch before merging. This matters because: a submitter who pasted a 3000-char summary doesn't want to find out via a "close and reopen with corrections" loop — they want their talk in queue with whatever cleanup the bot can do automatically, and a chance to refine via PR comments.
 
 ## Submission contract details
 
@@ -43,7 +47,7 @@ If validation fails, the bot comments on the issue listing what needs fixing and
 
 **Twitter/X handle is optional.** Speakers can paste a handle (with or without `@`) or a full `x.com/...` / `twitter.com/...` URL. Workflow normalizes to just the handle and validates against Twitter's actual rule (1-15 alphanumeric or underscore). When set, the speaker cell renders a `𝕏` icon linked to `x.com/<handle>`.
 
-**Summary length cap.** Talk summaries are capped at 600 characters at submission time. The homepage table shows up to ~500 chars of the summary; longer summaries truncate at the nearest sentence boundary with a clickable `[…]` linking back to the originating issue for the full text.
+**Summary length cap.** Talk summaries are auto-trimmed to 600 characters (sentence-aware) when written to `_data/talks.yml` — the workflow doesn't reject over-length summaries, it trims with a note. The homepage table further truncates display to ~500 chars with a clickable `[…]` linking back to the originating issue, where the full original always lives. Net effect: a 3000-char submission becomes a ~500-char preview on the homepage, a 600-char entry in YAML, and the full 3000 chars on the issue, all reachable from each other.
 
 ## Email-via-RSVP
 

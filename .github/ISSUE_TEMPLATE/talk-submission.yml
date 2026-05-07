@@ -11,7 +11,7 @@ body:
         - This issue and the resulting PR are **publicly visible**.
         - We'll contact you through this issue or your GitHub profile — no email field needed.
         - When an organizer merges the PR, your talk appears on the event page.
-        - If something needs fixing, the bot will comment here — please close this issue and submit a new one with corrections.
+        - The bot accepts your submission as-is. If anything's off (e.g. a too-long summary), it'll auto-trim with a link back here for the full text and tell you what it did. The organizer can edit on the PR branch before merging.
 
   - type: input
     id: first

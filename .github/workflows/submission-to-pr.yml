@@ -6,15 +6,28 @@ name: Talk submission → PR
 # label cause the workflow to start but the job to skip — no PR, no
 # comment, no label change.
 #
+# Fail-safe philosophy: validation NEVER blocks PR creation. If a field
+# is malformed (over-length summary, broken repo URL, weird Twitter
+# handle, blank required field), the workflow auto-corrects and
+# continues. The PR body lists what got auto-corrected and the bot
+# comments on the issue so the submitter knows; organizer can edit on
+# the `talk/<issue#>` branch before merging if they care. The only
+# thing that still blocks PR creation is dedup (one submission per
+# speaker) — that's a content rule, not a hygiene problem.
+#
 # Idempotency: branch name `talk/<issue#>` is deterministic, so re-runs
-# update the existing branch rather than create a new one. The dedup
-# step (Check duplicate submission) is read-only against the GitHub API
-# + _data/talks.yml; safe to retry. Append-entry is single-writer per
-# branch.
+# update the existing branch rather than create a duplicate. The dedup
+# step is read-only against the GitHub API + _data/talks.yml; safe to
+# retry. Append-entry is single-writer per branch.
 
 on:
   issues:
-    types: [opened]
+    # `opened` fires when a submitter creates the issue (the normal path).
+    # `reopened` is the organizer's manual re-trigger: close + reopen any
+    # talk-submission issue to re-run validation/dedup/PR-creation against
+    # the current workflow code (e.g. after a workflow improvement, or
+    # after a stuck submission needs another pass).
+    types: [opened, reopened]
 
 permissions:
   contents: write
@@ -37,40 +50,51 @@ jobs:
       - name: Install Python deps
         run: pip install --quiet pyyaml
 
-      - name: Validate fields
+      - name: Validate + auto-correct fields
         id: validate
         env:
           PAYLOAD: ${{ steps.parse.outputs.jsonString }}
           AUTHOR: ${{ github.event.issue.user.login }}
-        # Build the rendered comment body in Python so the github-script step
-        # below never has to template user-controlled strings into JS source
-        # (which breaks if the input contains backticks, ${, etc.). The
-        # comment body is passed through env, not via ${{ }} interpolation.
-        # Also: accept tolerant repo URLs (with /tree/, /blob/, .git, fragments)
-        # and emit the canonical form for downstream steps.
+          ISSUE: ${{ github.event.issue.number }}
+        # Auto-correct rather than reject. Each problematic input gets a
+        # sensible fallback + a human-readable note explaining what
+        # changed. Notes accumulate into `notes_md` (markdown bullet
+        # list); the PR body and a friendly issue comment surface them
+        # to organizer + submitter. This is the single source of
+        # canonical-field truth — downstream steps read from this
+        # step's outputs, not from the raw PAYLOAD.
         run: |
           python3 <<'PY'
           import json, os, re, secrets
           p = json.loads(os.environ['PAYLOAD'])
           author = os.environ.get('AUTHOR', 'there')
-          errs = []
-          for k in ('first', 'last', 'domain', 'summary'):
-              if not (p.get(k) or '').strip():
-                  errs.append(f"`{k}` is empty")
+          issue_num = os.environ.get('ISSUE', '')
+          notes = []  # human-readable list of auto-corrections; empty = nothing changed
 
-          # Summary length cap. Issue Forms can't enforce this client-side,
-          # so we reject server-side and tell the user the actual length so
-          # they know how much to trim.
-          SUMMARY_MAX = 600
-          summary = (p.get('summary') or '').strip()
-          if summary and len(summary) > SUMMARY_MAX:
-              errs.append(
-                  f"`summary` is too long ({len(summary)} chars; max {SUMMARY_MAX}). "
-                  "Trim to ~50-100 words; the homepage table only shows the "
-                  "first sentence anyway, with a link back here for the rest."
+          # --- first / last ---
+          # Issue Form enforces required:true on these, so empty values
+          # are nearly impossible in practice — but defend anyway. Fall
+          # back to GH handle so the speaker row has *something* the
+          # organizer can correct on the branch.
+          first = (p.get('first') or '').strip()
+          last  = (p.get('last') or '').strip()
+          if not first and not last:
+              first = author
+              notes.append(
+                  f"Speaker name was blank — fell back to your GitHub handle "
+                  f"(`{author}`). Edit the PR if you'd like a real name shown."
               )
 
-          # Repo is OPTIONAL. Validate format only when provided.
+          # --- domain ---
+          # Strip protocol + trailing slash. Empty domain just means the
+          # row won't render the domain link — no fix needed.
+          domain = (p.get('domain') or '').strip()
+          for prefix in ('https://', 'http://'):
+              if domain.startswith(prefix):
+                  domain = domain[len(prefix):]
+          domain = domain.rstrip('/')
+
+          # --- repo (optional, tolerant URL parsing, drop on any failure) ---
           repo_raw = (p.get('repo') or '').strip()
           repo_canonical = ''
           if repo_raw:
@@ -78,40 +102,28 @@ jobs:
               repo = repo_raw.split('#', 1)[0]
               if repo.endswith('.git'):
                   repo = repo[:-4]
-
-              # Accept tolerant shapes for github.com (any extra path is OK and
-              # will be trimmed below); gist.github.com gets the same treatment
-              # for the optional revision-SHA suffix so the table renders the
-              # canonical `<user>/<id>` instead of `<user>/<id>/<revision-sha>`.
               gh_re   = re.compile(r'^https?://github\.com/([^/\s]+)/([^/\s]+)(/[^\s]*)?/?$')
               gist_re = re.compile(r'^https?://gist\.github\.com/([^/\s]+)/([A-Za-z0-9]+)(/[A-Za-z0-9]+)?/?$')
-
               gh_match   = gh_re.match(repo)
               gist_match = gist_re.match(repo)
-
               if gh_match:
-                  # Normalize to https://github.com/<user>/<repo> (drop tree/blob/commit/etc.)
                   user = gh_match.group(1)
                   name = gh_match.group(2).rstrip('/')
                   repo_canonical = f"https://github.com/{user}/{name}"
               elif gist_match:
-                  # Normalize to https://gist.github.com/<user>/<id> (drop revision SHA).
                   user = gist_match.group(1)
                   gid  = gist_match.group(2)
                   repo_canonical = f"https://gist.github.com/{user}/{gid}"
               else:
-                  errs.append(
-                      "`repo` must be a GitHub repo or gist URL "
-                      "(or leave it blank — the field is optional). "
-                      "Examples: `https://github.com/octocat/Hello-World` "
-                      "or `https://gist.github.com/octocat/abc123def456`. "
-                      "Got: `" + repo_raw + "`"
+                  notes.append(
+                      f"Repo URL `{repo_raw}` didn't match `github.com/<user>/<repo>` "
+                      "or `gist.github.com/<user>/<id>` — left blank. Edit the PR "
+                      "to add a working URL."
                   )
 
-          # Twitter/X handle is OPTIONAL. Accept @handle, plain handle, or
-          # full URL (x.com or twitter.com). Persist just the handle.
+          # --- twitter (optional) ---
           twitter_raw = (p.get('twitter') or '').strip()
-          twitter = ''
+          twitter_canonical = ''
           if twitter_raw:
               t = twitter_raw
               for prefix in ('https://', 'http://'):
@@ -124,72 +136,75 @@ jobs:
                       t = t[len(prefix):]
               t = t.lstrip('@').rstrip('/').split('/', 1)[0].split('?', 1)[0]
               if re.match(r'^[A-Za-z0-9_]{1,15}$', t):
-                  twitter = t
+                  twitter_canonical = t
               else:
-                  errs.append(
-                      "`twitter` doesn't look like a Twitter/X handle "
-                      "(1-15 alphanumeric or underscore). Use just your "
-                      "handle (with or without `@`), or leave blank. "
-                      f"Got: `{twitter_raw}`"
+                  notes.append(
+                      f"Twitter/X handle `{twitter_raw}` doesn't look right "
+                      "(must be 1-15 alphanumeric or underscore) — left blank."
                   )
 
-          has_errors = "true" if errs else "false"
-          if errs:
-              body_lines = [
-                  f"Thanks for submitting, @{author}! A few things need fixing:",
-                  "",
-              ] + [f"- {e}" for e in errs] + [
-                  "",
-                  "Edits to the original issue won't re-parse cleanly, so the cleanest "
-                  "path is to close this one and "
-                  "[open a fresh submission](https://github.com/"
-                  + os.environ.get('GITHUB_REPOSITORY', 'milstan/sisw')
-                  + "/issues/new?template=talk-submission.yml) "
-                  "with the corrections — same fields, just the right repo URL.",
-              ]
-              body = "\n".join(body_lines)
-          else:
-              body = ""
+          # --- summary ---
+          # Cap at SUMMARY_MAX (600) for the YAML data contract. The
+          # README's truncate_summary further trims to ~500 chars at
+          # display time and adds a [...] link back to the issue, so
+          # the full original is always one click away from the
+          # homepage.
+          SUMMARY_MAX = 600
+          summary = (p.get('summary') or '').strip()
+          if not summary:
+              summary = f"_(see issue #{issue_num} for talk description)_"
+              notes.append(
+                  "Summary was blank — left a placeholder. Edit the PR to "
+                  "add real content before merging."
+              )
+          elif len(summary) > SUMMARY_MAX:
+              orig_len = len(summary)
+              # Walk forward to the last sentence boundary that fits in
+              # SUMMARY_MAX. Word-boundary fallback if no sentence end
+              # is reasonably placed (i.e. the first sentence itself is
+              # already huge).
+              cut = -1
+              for i, ch in enumerate(summary[:SUMMARY_MAX]):
+                  if ch in '.!?' and (i + 1 == len(summary) or summary[i + 1].isspace()):
+                      cut = i + 1
+              if cut < SUMMARY_MAX * 0.4:
+                  word_cut = summary.rfind(' ', 0, SUMMARY_MAX)
+                  cut = word_cut if word_cut > 0 else SUMMARY_MAX
+              summary = summary[:cut].rstrip()
+              notes.append(
+                  f"Summary trimmed from {orig_len} → {len(summary)} chars at "
+                  f"sentence boundary. Full text stays on #{issue_num} — the "
+                  "homepage links back via `[…]`."
+              )
+
+          # --- emit canonical outputs + notes ---
+          notes_md = "\n".join(f"- {n}" for n in notes)
           delim = "EOF_" + secrets.token_hex(8)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write(f"has_errors={has_errors}\n")
+              f.write(f"first_canonical={first}\n")
+              f.write(f"last_canonical={last}\n")
+              f.write(f"domain_canonical={domain}\n")
               f.write(f"repo_canonical={repo_canonical}\n")
-              f.write(f"twitter_canonical={twitter}\n")
-              f.write(f"body<<{delim}\n{body}\n{delim}\n")
+              f.write(f"twitter_canonical={twitter_canonical}\n")
+              f.write(f"summary_canonical<<{delim}\n{summary}\n{delim}\n")
+              f.write(f"has_notes={'true' if notes else 'false'}\n")
+              f.write(f"notes_md<<{delim}\n{notes_md}\n{delim}\n")
           PY
-
-      - name: Comment on validation failure
-        if: steps.validate.outputs.has_errors == 'true'
-        uses: actions/github-script@v7
-        env:
-          BODY: ${{ steps.validate.outputs.body }}
-        with:
-          script: |
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: process.env.BODY,
-            });
-            await github.rest.issues.addLabels({
-              ...context.repo,
-              issue_number: context.issue.number,
-              labels: ['needs-fixes'],
-            });
 
       - name: Check duplicate submission
         id: dup
-        if: steps.validate.outputs.has_errors == 'false'
         env:
           AUTHOR: ${{ github.event.issue.user.login }}
           ISSUE: ${{ github.event.issue.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # One submission per GitHub user. Three checks, in order. Each
-        # produces a one-line URL to the existing submission and exits early.
-        # Order matters: an approved talk wins over an open issue, which wins
-        # over an open PR — that's also the order of "most permanent / most
-        # decided" so the rejection comment names the most authoritative
-        # existing submission. Builds the rendered comment body here so the
-        # comment step doesn't have to template strings into JS.
+        # produces a one-line URL to the existing submission and exits
+        # early. Order matters: an approved talk wins over an open
+        # issue, which wins over an open PR — that's also the order of
+        # "most permanent / most decided" so the rejection comment
+        # names the most authoritative existing submission. Builds the
+        # rendered comment body here so the comment step doesn't have
+        # to template strings into JS.
         run: |
           python3 <<'PY'
           # Dedup is three short-circuit checks, in priority order:
@@ -292,7 +307,7 @@ jobs:
           PY
 
       - name: Comment on duplicate submission
-        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'true'
+        if: steps.dup.outputs.is_duplicate == 'true'
         uses: actions/github-script@v7
         env:
           BODY: ${{ steps.dup.outputs.body }}
@@ -310,40 +325,36 @@ jobs:
             });
 
       - name: Append entry to _data/talks.yml + regenerate README block
-        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
+        if: steps.dup.outputs.is_duplicate == 'false'
         env:
-          PAYLOAD: ${{ steps.parse.outputs.jsonString }}
           ISSUE: ${{ github.event.issue.number }}
           AUTHOR: ${{ github.event.issue.user.login }}
+          FIRST: ${{ steps.validate.outputs.first_canonical }}
+          LAST: ${{ steps.validate.outputs.last_canonical }}
+          DOMAIN: ${{ steps.validate.outputs.domain_canonical }}
           REPO_CANONICAL: ${{ steps.validate.outputs.repo_canonical }}
           TWITTER_CANONICAL: ${{ steps.validate.outputs.twitter_canonical }}
+          SUMMARY: ${{ steps.validate.outputs.summary_canonical }}
         run: |
           python3 <<'PY'
-          import json, os, datetime, pathlib, re, yaml
-          p = json.loads(os.environ['PAYLOAD'])
+          import os, datetime, pathlib, re, yaml
 
-          # 1. Append the new entry to _data/talks.yml.
+          # 1. Append the new entry to _data/talks.yml. All fields are
+          #    canonical — the validate step already trimmed/normalized,
+          #    so this step is a pure write.
           path = pathlib.Path('_data/talks.yml')
           existing = []
           if path.exists():
               loaded = yaml.safe_load(path.read_text())
               if isinstance(loaded, list):
                   existing = loaded
-          domain = p['domain'].strip()
-          for prefix in ('https://', 'http://'):
-              if domain.startswith(prefix):
-                  domain = domain[len(prefix):]
-          domain = domain.rstrip('/')
-          # Repo is optional; canonical form is empty string when blank.
-          repo_canonical = (os.environ.get('REPO_CANONICAL') or '').strip().rstrip('/')
-          twitter_canonical = (os.environ.get('TWITTER_CANONICAL') or '').strip()
           entry = {
-              'first':            p['first'].strip(),
-              'last':             p['last'].strip(),
-              'domain':           domain,
-              'repo':             repo_canonical,
-              'twitter':          twitter_canonical,
-              'summary':          p['summary'].strip(),
+              'first':            os.environ['FIRST'],
+              'last':             os.environ['LAST'],
+              'domain':           os.environ['DOMAIN'],
+              'repo':             os.environ.get('REPO_CANONICAL', ''),
+              'twitter':          os.environ.get('TWITTER_CANONICAL', ''),
+              'summary':          os.environ['SUMMARY'],
               'submitter_github': os.environ['AUTHOR'],
               'submitted_at':     datetime.datetime.now(datetime.UTC).strftime('%Y-%m-%dT%H:%M:%SZ'),
               'issue':            int(os.environ['ISSUE']),
@@ -451,6 +462,83 @@ jobs:
               print("::warning::TALKS:START/END markers not found in README.md — table not regenerated.")
           PY
 
+      - name: Build PR body
+        if: steps.dup.outputs.is_duplicate == 'false'
+        id: pr_body
+        env:
+          ISSUE: ${{ github.event.issue.number }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          FIRST: ${{ steps.validate.outputs.first_canonical }}
+          LAST: ${{ steps.validate.outputs.last_canonical }}
+          DOMAIN: ${{ steps.validate.outputs.domain_canonical }}
+          REPO_CANONICAL: ${{ steps.validate.outputs.repo_canonical }}
+          SUMMARY: ${{ steps.validate.outputs.summary_canonical }}
+          HAS_NOTES: ${{ steps.validate.outputs.has_notes }}
+          NOTES_MD: ${{ steps.validate.outputs.notes_md }}
+        # Build the PR body in Python so multi-line summaries and the
+        # optional auto-corrections section don't have to be templated
+        # via brittle GitHub Actions expression conditionals. We use a
+        # <blockquote> HTML tag for the summary so multi-line text
+        # renders inside the blockquote without per-line `> ` prefix
+        # gymnastics.
+        run: |
+          python3 <<'PY'
+          import os, secrets
+          first = os.environ['FIRST']
+          last  = os.environ['LAST']
+          domain = os.environ['DOMAIN']
+          repo = os.environ.get('REPO_CANONICAL', '')
+          summary = os.environ['SUMMARY']
+          has_notes = os.environ.get('HAS_NOTES', 'false') == 'true'
+          notes_md = os.environ.get('NOTES_MD', '')
+          issue = os.environ['ISSUE']
+          author = os.environ['AUTHOR']
+
+          speaker = f"{first} {last}".strip() or '_(blank)_'
+          domain_cell = f"<https://{domain}>" if domain else '_(none)_'
+          repo_cell = repo if repo else '_(none)_'
+
+          parts = [
+              f"Submitted via #{issue} by @{author}.",
+              "",
+              "| Field | Value |",
+              "|---|---|",
+              f"| **Speaker** | {speaker} |",
+              f"| **Startup** | {domain_cell} |",
+              f"| **Repo** | {repo_cell} |",
+              "",
+              "<blockquote>",
+              "",
+              summary,
+              "",
+              "</blockquote>",
+          ]
+          if has_notes:
+              parts.extend([
+                  "",
+                  "---",
+                  "",
+                  "🛠️ **Auto-corrections applied** (organizer can edit on this branch before merging):",
+                  "",
+                  notes_md,
+              ])
+          parts.extend([
+              "",
+              "---",
+              "",
+              f"**Approve = merge this PR** (closes #{issue} and rebuilds the homepage). "
+              f"**Reject = close this PR** with a brief comment. **Edit before approving:** "
+              f"push commits to `talk/{issue}` (e.g. fix a typo in the summary), then merge.",
+              "",
+              f"Closes #{issue}",
+          ])
+          body = "\n".join(parts)
+
+          delim = "EOF_" + secrets.token_hex(8)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"body<<{delim}\n{body}\n{delim}\n")
+          PY
+
       - name: Detect existing PR branch
         # Purely informational. peter-evans/create-pull-request@v6 already
         # handles re-runs idempotently (updates the branch in place, doesn't
@@ -458,7 +546,7 @@ jobs:
         # behavior visible in the action log so a future maintainer doesn't
         # have to reverse-engineer it. continue-on-error so a 404 (fresh
         # branch) doesn't fail the job.
-        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
+        if: steps.dup.outputs.is_duplicate == 'false'
         continue-on-error: true
         env:
           BRANCH: talk/${{ github.event.issue.number }}
@@ -471,26 +559,44 @@ jobs:
           fi
 
       - name: Open PR
-        if: steps.validate.outputs.has_errors == 'false' && steps.dup.outputs.is_duplicate == 'false'
+        if: steps.dup.outputs.is_duplicate == 'false'
+        id: create-pr
         uses: peter-evans/create-pull-request@v6
         with:
           branch: talk/${{ github.event.issue.number }}
-          commit-message: "Add talk: ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }}"
-          title: "Talk submission: ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }}"
+          commit-message: "Add talk: ${{ steps.validate.outputs.first_canonical }} ${{ steps.validate.outputs.last_canonical }}"
+          title: "Talk submission: ${{ steps.validate.outputs.first_canonical }} ${{ steps.validate.outputs.last_canonical }}"
           labels: talk-submission
-          body: |
-            Submitted via #${{ github.event.issue.number }} by @${{ github.event.issue.user.login }}.
+          body: ${{ steps.pr_body.outputs.body }}
 
-            | Field | Value |
-            |---|---|
-            | **Speaker** | ${{ fromJSON(steps.parse.outputs.jsonString).first }} ${{ fromJSON(steps.parse.outputs.jsonString).last }} |
-            | **Startup** | <https://${{ fromJSON(steps.parse.outputs.jsonString).domain }}> |
-            | **Repo** | ${{ steps.validate.outputs.repo_canonical || '— (none)' }} |
-
-            > ${{ fromJSON(steps.parse.outputs.jsonString).summary }}
-
-            ---
-
-            **Approve = merge this PR** (closes #${{ github.event.issue.number }} and rebuilds the homepage). **Reject = close this PR** with a brief comment. **Edit before approving:** push commits to `talk/${{ github.event.issue.number }}` (e.g. fix a typo in the summary), then merge.
-
-            Closes #${{ github.event.issue.number }}
+      - name: Comment on auto-corrections
+        # Friendly heads-up to the submitter when we auto-corrected
+        # anything. Only fires after a successful PR creation so we can
+        # reference the PR number, and only when notes are present.
+        # No label added — auto-correction isn't a "needs work" state
+        # the organizer needs to triage.
+        if: steps.dup.outputs.is_duplicate == 'false' && steps.validate.outputs.has_notes == 'true' && steps.create-pr.outputs.pull-request-number
+        uses: actions/github-script@v7
+        env:
+          NOTES_MD: ${{ steps.validate.outputs.notes_md }}
+          PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+        with:
+          script: |
+            const author = process.env.AUTHOR;
+            const prNum = process.env.PR_NUMBER;
+            const notes = process.env.NOTES_MD;
+            const body = [
+              `Thanks @${author}! Your submission is in PR #${prNum} — an organizer will review.`,
+              '',
+              '🛠️ A couple of small adjustments along the way:',
+              '',
+              notes,
+              '',
+              "If anything looks off, comment on the PR or here and the organizer will fix it before merging.",
+            ].join('\n');
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body,
+            });
