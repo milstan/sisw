@@ -13,7 +13,7 @@ So we're organising this gathering of like-minded (call us crazy) people trying 
 
 **No titles, no degrees, just learnings.**
 
-We invite submissions of **5-minute talks**, followed by a few questions and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
+We invite submissions of **5-minute talks** (including Q&A - nothing fancy - just present what you're doing) and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
 
 > **When:** May 21, 2026 · 6pm PDT
 > **Where:** San Francisco, California · venue TBD
