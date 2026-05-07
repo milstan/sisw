@@ -15,12 +15,14 @@ So we're organising this gathering of like-minded (call us crazy) people trying 
 
 We invite submissions of **5-minute talks**, followed by a few questions and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
 
-> **When:** May 22, 2026 · 3pm PDT
+> **When:** May 21, 2026 · 6pm PDT
 > **Where:** San Francisco, California · venue TBD
 
 **Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & [Erik Dahl](https://github.com/erikd234) ([Parrot](https://parrotapp.com))
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
+
+[RSVP on Luma](https://luma.com/lkni43xl)
 
 ---
 
