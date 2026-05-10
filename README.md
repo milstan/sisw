@@ -33,6 +33,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 |---|---|
 | [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) · [🔗](https://gist.github.com/milstan/3b12f938f344f4ae1f511dd19e56adce) | A coding agent using a thinking frontier model can iterate overnight and deliver a perfected software output with very limited instructions. It seems to work best when the agent can perform a qualitative assessment of the work, and score it on some scale that becomes a reward function the agent optimizes through iterations (like gradient descent). |
 | [**Erik Dahl**](https://github.com/erikd234)<br>[parrotapp.com](https://parrotapp.com) | The thesis  A lot of devs right now are getting good at running 5–10 parallel Claudes — checking in on each one, unsticking it, answering its questions, ferrying context between them. […](https://github.com/milstan/sisw/issues/12) |
+| [**Mehul Agarwal**](https://github.com/agarwalml)<br>[koyal.ai](https://koyal.ai) · [𝕏](https://x.com/meh_agarwal) | Domain specific agentic harnesses  Claude Code / Codex works out of the box for software, but most businesses aren’t software businesses. […](https://github.com/milstan/sisw/issues/14) |
 <!-- TALKS:END -->
 
 <!--
