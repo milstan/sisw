@@ -34,3 +34,21 @@
   submitter_github: erikd234
   submitted_at: '2026-05-07T23:21:07Z'
   issue: 12
+- first: Mehul
+  last: Agarwal
+  domain: koyal.ai
+  repo: ''
+  twitter: meh_agarwal
+  summary: 'Domain specific agentic harnesses
+
+
+    Claude Code / Codex works out of the box for software, but most businesses aren’t
+    software businesses. They have their own languages, tools, and specs that generic
+    agents don’t understand. In this talk, I’ll share howwee''er building a domain-specific
+    agent harness for filmmaking and AI video at Koyal. How can we see the abstractions,
+    tools, and context that turn a general-purpose coding agent into a domain expert.
+    I’ll also cover why chat is the wrong default interface for this work, and what
+    replaces it.'
+  submitter_github: agarwalml
+  submitted_at: '2026-05-10T19:17:11Z'
+  issue: 14
