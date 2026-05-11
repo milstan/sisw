@@ -68,3 +68,19 @@
   submitter_github: rakeshvmehta
   submitted_at: '2026-05-11T04:49:06Z'
   issue: 16
+- first: Dhruv
+  last: Roongta
+  domain: slashy.com
+  repo: ''
+  twitter: DhruvRoongta
+  summary: 'We''re building an AI-native email client that helps draft emails in the
+    user''s voice, triage emails, and never drop the ball on emails. A significant
+    challenge is having the Agent learn continuously about the user''s preferences.
+    Our belief is that the interface, i.e. the email client, should implicitly and
+    explicitly collect signals that lead to continual improvement of the agent and
+    other incorporated systems. We do this multi-fold, but a simple example is triaging:
+    Whenever the _User_ relabels an email, we ask them why, and this fed back to the
+    labeling system to improve over time.'
+  submitter_github: Dhruv317
+  submitted_at: '2026-05-11T19:05:04Z'
+  issue: 18
