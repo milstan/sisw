@@ -52,3 +52,19 @@
   submitter_github: agarwalml
   submitted_at: '2026-05-10T19:17:11Z'
   issue: 14
+- first: Rakesh
+  last: Mehta
+  domain: zarnaai.com
+  repo: ''
+  twitter: rak3sh_m
+  summary: Recently, there has been a lot of buzz about building a software factory
+    and tokenmaxxing, but the variance in results for people who have tried to implement
+    this for production-grade software has been very mixed. The biggest factor in
+    making a software factory successful is the method to automate the testing / QA
+    portion and making the agents understand what "good" looks like. This comes from
+    making a testing "harness" or system of testing, which becomes the foundation
+    for the agent to iterate on top of. The final code output will only be as good
+    as your testing pipeline.
+  submitter_github: rakeshvmehta
+  submitted_at: '2026-05-11T04:49:06Z'
+  issue: 16
