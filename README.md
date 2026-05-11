@@ -35,6 +35,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 | [**Erik Dahl**](https://github.com/erikd234)<br>[parrotapp.com](https://parrotapp.com) | The thesis  A lot of devs right now are getting good at running 5–10 parallel Claudes — checking in on each one, unsticking it, answering its questions, ferrying context between them. […](https://github.com/milstan/sisw/issues/12) |
 | [**Mehul Agarwal**](https://github.com/agarwalml)<br>[koyal.ai](https://koyal.ai) · [𝕏](https://x.com/meh_agarwal) | Domain specific agentic harnesses  Claude Code / Codex works out of the box for software, but most businesses aren’t software businesses. […](https://github.com/milstan/sisw/issues/14) |
 | [**Rakesh Mehta**](https://github.com/rakeshvmehta)<br>[zarnaai.com](https://zarnaai.com) · [𝕏](https://x.com/rak3sh_m) | Recently, there has been a lot of buzz about building a software factory and tokenmaxxing, but the variance in results for people who have tried to implement this for production-grade software has been very mixed. […](https://github.com/milstan/sisw/issues/16) |
+| [**Dhruv Roongta**](https://github.com/Dhruv317)<br>[slashy.com](https://slashy.com) · [𝕏](https://x.com/DhruvRoongta) | We're building an AI-native email client that helps draft emails in the user's voice, triage emails, and never drop the ball on emails. […](https://github.com/milstan/sisw/issues/18) |
 <!-- TALKS:END -->
 
 <!--
