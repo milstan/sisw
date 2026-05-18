@@ -84,3 +84,20 @@
   submitter_github: Dhruv317
   submitted_at: '2026-05-11T19:05:04Z'
   issue: 18
+- first: pranav
+  last: bedi
+  domain: moda.dev
+  repo: ''
+  twitter: pranavbedi
+  summary: 'Agents today learn like 2010-era SaaS: a human watches a dashboard, files
+    a ticket, opens a PR. The user is upstream of the fix by days. That''s backwards,
+    the user interaction IS the training signal. Every frustration, abandonment, and
+    silent failure is a labeled example of what the agent shouldn''t have done. The
+    job is to extract those labels automatically and pipe them into the next self-edit
+    cycle.
+
+
+    Example: one user typed "i received nothing, how come" at 2am.'
+  submitter_github: pranavbedi
+  submitted_at: '2026-05-17T00:36:36Z'
+  issue: 20
