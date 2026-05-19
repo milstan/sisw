@@ -101,3 +101,18 @@
   submitter_github: pranavbedi
   submitted_at: '2026-05-17T00:36:36Z'
   issue: 20
+- first: Tiger
+  last: Wang
+  domain: nessielabs.com
+  repo: ''
+  twitter: tigerjwang
+  summary: The path to self-improving software is easier (and more agentic) than you
+    might think. Our internal agent platform runs on ~500 lines of Express + SQLite
+    + cron calling `claude -p` — no agent framework, no multi-agent protocol, no message
+    bus. It's been running PR reviews and user-facing email campaign agents across
+    Nessie in production. I'll share why we haven't needed anything fancier, where
+    the simple loop actually breaks, and the case for under-engineering your orchestrator
+    in 2026.
+  submitter_github: thenewpotato
+  submitted_at: '2026-05-19T06:01:26Z'
+  issue: 22
