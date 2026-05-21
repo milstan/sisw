@@ -104,7 +104,7 @@
 - first: Tiger
   last: Wang
   domain: nessielabs.com
-  repo: ''
+  repo: https://github.com/nessielabs/boring-orchestrator
   twitter: tigerjwang
   summary: The path to self-improving software is easier (and more agentic) than you
     might think. Our internal agent platform runs on ~500 lines of Express + SQLite
