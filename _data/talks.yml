@@ -116,3 +116,28 @@
   submitter_github: thenewpotato
   submitted_at: '2026-05-19T06:01:26Z'
   issue: 22
+- first: Alexandru
+  last: Turcanu
+  domain: flaco.851.sh
+  repo: ''
+  twitter: pondorasti
+  summary: 'Making AI multiplayer.
+
+
+    Every company wants a self improving AI Agent like [River](https://x.com/tobi/status/2053121182044451016)
+    or [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent),
+    yet existing harnesses like OpenClaw quickly fall apart the moment you add them
+    in Slack.
+
+
+    We’ll explore how we built an agent harness for teams and dive into the details
+    that power it:
+
+    - thread isolation with sandboxing
+
+    - shared memory model
+
+    - capabilities that go beyond MCPs'
+  submitter_github: pondorasti
+  submitted_at: '2026-05-21T07:15:31Z'
+  issue: 26
