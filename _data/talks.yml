@@ -172,3 +172,26 @@
   submitter_github: Saai151
   submitted_at: '2026-05-21T18:33:53Z'
   issue: 28
+- first: Declan
+  last: Johnston
+  domain: inference.net
+  repo: https://github.com/context-labs/HALO
+  twitter: ''
+  summary: 'A general-purpose harness like Claude Code is the wrong tool for trace
+    analysis. This isn’t because the model isn’t smart, but because traces can get
+    extremely long, and you need a specialized toolkit in order to make observations
+    about systemic agentic behavior. HALO (Hierarchical Agent Loop Optimization) is
+    a methodology for building recursively self-improving agent harnesses using RLMs.
+
+
+    The core HALO loop is suprisingly simple:
+
+    1. Collect execution traces from your agent harness. HALO uses OpenTelemetry-compatible
+    tracing.
+
+    2. Feed traces into HALO-RLM engine.
+
+    3.'
+  submitter_github: declanatinference
+  submitted_at: '2026-05-21T20:17:59Z'
+  issue: 31
