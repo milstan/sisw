@@ -157,3 +157,18 @@
   submitter_github: pondorasti
   submitted_at: '2026-05-21T07:15:31Z'
   issue: 26
+- first: Saai
+  last: Arora
+  domain: tryreplicas.com
+  repo: ''
+  twitter: saaiarora
+  summary: We're building replicas which is a cloud coding agent where you bring your
+    own credentials for Claude Code or Codex. Customers like Mintlify and Composio
+    use us to do everything from writing code to E2E testing via automations and integrations
+    with Slack and Linear. Each agent works inside customizable VM environments, so
+    work is parallelized and shareable across the team. Replicas can access sources
+    like databases, Datadog or Notion, and return screenshots and videos as proof
+    of work.
+  submitter_github: Saai151
+  submitted_at: '2026-05-21T18:33:53Z'
+  issue: 28
