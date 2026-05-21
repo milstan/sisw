@@ -104,7 +104,7 @@
 - first: Tiger
   last: Wang
   domain: nessielabs.com
-  repo: ''
+  repo: https://github.com/nessielabs/boring-orchestrator
   twitter: tigerjwang
   summary: The path to self-improving software is easier (and more agentic) than you
     might think. Our internal agent platform runs on ~500 lines of Express + SQLite
@@ -116,6 +116,85 @@
   submitter_github: thenewpotato
   submitted_at: '2026-05-19T06:01:26Z'
   issue: 22
+- first: Shashank
+  last: Agarwal
+  domain: noveum.ai
+  repo: ''
+  twitter: itsshashank
+  summary: 'AI agents are already silently failing in production — most enterprises
+    just don’t realize it yet. At Noveum.ai, we’re building autonomous reliability
+    infrastructure for AI agents: replay testing, continuous evals, synthetic voice
+    testing, regression detection, and PR-based auto-remediation workflows. The hardest
+    problem has been closing the loop between detecting failures and safely validating
+    fixes before deployment. I’ll share real-world lessons from deploying these systems
+    across enterprise voice agents, customer support automation, and multi-step AI
+    workflows.'
+  submitter_github: imshashank
+  submitted_at: '2026-05-20T23:13:18Z'
+  issue: 24
+- first: Alexandru
+  last: Turcanu
+  domain: flaco.851.sh
+  repo: ''
+  twitter: pondorasti
+  summary: 'Making AI multiplayer.
+
+
+    Every company wants a self improving AI Agent like [River](https://x.com/tobi/status/2053121182044451016)
+    or [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent),
+    yet existing harnesses like OpenClaw quickly fall apart the moment you add them
+    in Slack.
+
+
+    We’ll explore how we built an agent harness for teams and dive into the details
+    that power it:
+
+    - thread isolation with sandboxing
+
+    - shared memory model
+
+    - capabilities that go beyond MCPs'
+  submitter_github: pondorasti
+  submitted_at: '2026-05-21T07:15:31Z'
+  issue: 26
+- first: Saai
+  last: Arora
+  domain: tryreplicas.com
+  repo: ''
+  twitter: saaiarora
+  summary: We're building replicas which is a cloud coding agent where you bring your
+    own credentials for Claude Code or Codex. Customers like Mintlify and Composio
+    use us to do everything from writing code to E2E testing via automations and integrations
+    with Slack and Linear. Each agent works inside customizable VM environments, so
+    work is parallelized and shareable across the team. Replicas can access sources
+    like databases, Datadog or Notion, and return screenshots and videos as proof
+    of work.
+  submitter_github: Saai151
+  submitted_at: '2026-05-21T18:33:53Z'
+  issue: 28
+- first: Declan
+  last: Johnston
+  domain: inference.net
+  repo: https://github.com/context-labs/HALO
+  twitter: ''
+  summary: 'A general-purpose harness like Claude Code is the wrong tool for trace
+    analysis. This isn’t because the model isn’t smart, but because traces can get
+    extremely long, and you need a specialized toolkit in order to make observations
+    about systemic agentic behavior. HALO (Hierarchical Agent Loop Optimization) is
+    a methodology for building recursively self-improving agent harnesses using RLMs.
+
+
+    The core HALO loop is suprisingly simple:
+
+    1. Collect execution traces from your agent harness. HALO uses OpenTelemetry-compatible
+    tracing.
+
+    2. Feed traces into HALO-RLM engine.
+
+    3.'
+  submitter_github: declanatinference
+  submitted_at: '2026-05-21T20:17:59Z'
+  issue: 31
 - first: Landseer
   last: Enga
   domain: revyl.com
