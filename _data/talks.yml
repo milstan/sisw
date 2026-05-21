@@ -104,7 +104,7 @@
 - first: Tiger
   last: Wang
   domain: nessielabs.com
-  repo: ''
+  repo: https://github.com/nessielabs/boring-orchestrator
   twitter: tigerjwang
   summary: The path to self-improving software is easier (and more agentic) than you
     might think. Our internal agent platform runs on ~500 lines of Express + SQLite
@@ -116,6 +116,22 @@
   submitter_github: thenewpotato
   submitted_at: '2026-05-19T06:01:26Z'
   issue: 22
+- first: Shashank
+  last: Agarwal
+  domain: noveum.ai
+  repo: ''
+  twitter: itsshashank
+  summary: 'AI agents are already silently failing in production — most enterprises
+    just don’t realize it yet. At Noveum.ai, we’re building autonomous reliability
+    infrastructure for AI agents: replay testing, continuous evals, synthetic voice
+    testing, regression detection, and PR-based auto-remediation workflows. The hardest
+    problem has been closing the loop between detecting failures and safely validating
+    fixes before deployment. I’ll share real-world lessons from deploying these systems
+    across enterprise voice agents, customer support automation, and multi-step AI
+    workflows.'
+  submitter_github: imshashank
+  submitted_at: '2026-05-20T23:13:18Z'
+  issue: 24
 - first: Alexandru
   last: Turcanu
   domain: flaco.851.sh
