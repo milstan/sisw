@@ -195,3 +195,12 @@
   submitter_github: declanatinference
   submitted_at: '2026-05-21T20:17:59Z'
   issue: 31
+- first: Landseer
+  last: Enga
+  domain: revyl.com
+  repo: https://github.com/RevylAI/mobile-devtools
+  twitter: landseerenga
+  summary: Mobile infrastructure for coding agents to verify their work in the cloud!
+  submitter_github: Landseer100
+  submitted_at: '2026-05-21T20:49:51Z'
+  issue: 33
