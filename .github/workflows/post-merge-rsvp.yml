@@ -30,7 +30,7 @@ jobs:
         env:
           # Override via repo variable SISW_EVENT_URL when the public
           # event URL changes (or to fix the manage-vs-public URL).
-          EVENT_URL: ${{ vars.SISW_EVENT_URL || 'https://luma.com/event/manage/evt-XgCxpVXEsGHIVHD' }}
+          EVENT_URL: ${{ vars.SISW_EVENT_URL || 'https://luma.com/4nzrnhj6' }}
         with:
           script: |
             const pr = context.payload.pull_request;
