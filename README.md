@@ -20,7 +20,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 > **When:** May 30, 2026
 > **Where:** San Francisco, California · Awesomic (156 2nd St)
 
-**Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai))
+**Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & [Erik Dahl](https://github.com/erikd234) ([Parrot](https://parrotapp.com))
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
 
@@ -33,7 +33,6 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
-| [**Test Submission**](https://github.com/milstan)<br>[example.com](https://example.com) · [🔗](https://github.com/milstan/sisw) | This is an automated end-to-end test of the talk-submission workflow after the 2nd-SISW reset — verifying the PR generation, README regeneration with an empty starting table, and the post-merge RSVP comment. This issue will be closed and the resulting PR rejected as part of cleanup. |
 <!-- TALKS:END -->
 
 <!--
