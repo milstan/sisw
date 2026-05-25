@@ -1,7 +1,15 @@
 # Approved talk submissions. Append-only — added via PRs from the
 # .github/workflows/submission-to-pr.yml workflow when an organizer merges.
 # Don't edit by hand unless you're correcting a typo.
-#
-# Reset for the 2nd SISW. The 1st edition's roster lives at 1st-sisw.md
-# (static snapshot — that page is hand-edited, not regenerated).
-[]
+- first: Test
+  last: Submission
+  domain: example.com
+  repo: https://github.com/milstan/sisw
+  twitter: ''
+  summary: This is an automated end-to-end test of the talk-submission workflow after
+    the 2nd-SISW reset — verifying the PR generation, README regeneration with an
+    empty starting table, and the post-merge RSVP comment. This issue will be closed
+    and the resulting PR rejected as part of cleanup.
+  submitter_github: milstan
+  submitted_at: '2026-05-25T21:46:16Z'
+  issue: 36
