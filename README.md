@@ -33,6 +33,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
+| [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) | Building on our [earlier self-improving software ideas](https://github.com/milstan/sisw/blob/main/1st-sisw.md#talks), [Arty](https://github.com/ArtyETH06) and I have been working on making our MCP server self-improving. […](https://github.com/milstan/sisw/issues/39) |
 <!-- TALKS:END -->
 
 <!--

@@ -1,7 +1,20 @@
 # Approved talk submissions. Append-only — added via PRs from the
 # .github/workflows/submission-to-pr.yml workflow when an organizer merges.
 # Don't edit by hand unless you're correcting a typo.
-#
-# Reset for the 2nd SISW. The 1st edition's roster lives at 1st-sisw.md
-# (static snapshot — that page is hand-edited, not regenerated).
-[]
+- first: Milan
+  last: Stankovic
+  domain: leadbay.ai
+  repo: ''
+  twitter: milstan
+  summary: 'Building on our [earlier self-improving software ideas](https://github.com/milstan/sisw/blob/main/1st-sisw.md#talks),
+    [Arty](https://github.com/ArtyETH06) and I have been working on making our MCP
+    server self-improving.
+
+
+    We''ll present our setup and the lessons we''ve learned. We leverage MCP tool
+    descriptions and prompts to instruct user agents to log user needs and report
+    user frustration. We then use this information automatically to surface feature
+    requests, identify fixes, and deliver improvements.'
+  submitter_github: milstan
+  submitted_at: '2026-06-12T12:00:06Z'
+  issue: 39
