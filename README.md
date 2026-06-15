@@ -1,7 +1,11 @@
 # 2nd Self-Improving Software Workshop
-San Francisco, California
 
-Following the success of the [1st Self-Improving Software Workshop](1st-sisw.md), we're organising the second edition on **May 30, 2026**.
+> **When:** June 30, 2026 · 6-8pm PDT
+> **Where:** San Francisco, California · [Awesomic office (156 2nd St)](https://share.google/hLbmicjojKJ21R2z9)
+
+[RSVP on Luma](https://luma.com/4nzrnhj6)
+
+Following the success of the [1st Self-Improving Software Workshop](1st-sisw.md), we're organising the second edition on **June 30, 2026**.
 
 The coding capabilities of frontier models make us all wonder what is the future of Software Engineering.
 
@@ -17,14 +21,9 @@ So we're organising this gathering of like-minded (call us crazy) people trying 
 
 We invite submissions of **5-minute talks** (including Q&A - nothing fancy - just present what you're doing) and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
 
-> **When:** May 30, 2026
-> **Where:** San Francisco, California · Awesomic (156 2nd St)
-
 **Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & [Erik Dahl](https://github.com/erikd234) ([Parrot](https://parrotapp.com))
 
 [**→ Submit your talk**](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml)
-
-[RSVP on Luma](https://luma.com/4nzrnhj6)
 
 ---
 
