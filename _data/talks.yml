@@ -39,3 +39,16 @@
   submitter_github: lluisinthedesert
   submitted_at: '2026-06-18T20:06:38Z'
   issue: 43
+- first: Dhasharath
+  last: Shrivathsa
+  domain: dha.sh
+  repo: ''
+  twitter: ''
+  summary: I’ve been using IMAX as a self improving software IDE. I think this is
+    really interesting. It allows me to express new software want and store it and
+    have agentic processes improve it in the background as I edit my daily files.
+    In this talk, I’ll show you how to get started with the emacs MCP server, and
+    use it to build a customized IDE for your needs.
+  submitter_github: DhashS
+  submitted_at: '2026-06-20T00:05:31Z'
+  issue: 45
