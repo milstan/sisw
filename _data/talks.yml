@@ -52,3 +52,18 @@
   submitter_github: DhashS
   submitted_at: '2026-06-20T00:05:31Z'
   issue: 45
+- first: Saai
+  last: Arora
+  domain: tryreplicas.com
+  repo: ''
+  twitter: SaaiArora
+  summary: 'Las time I talked about Replicas, this time I want to talk about a feature
+    that we have in development, Replicas React: an automated triage layer that turns
+    Slack, Linear, and GitHub requests into well-scoped tasks for coding agents. The
+    demo will show how incoming bugs or feature requests can be classified, routed
+    to the right environment, enriched with context, and delegated to an implementation
+    agent. The hardest part so far is deciding when automation should act versus when
+    it should hand off to a human.'
+  submitter_github: Saai151
+  submitted_at: '2026-06-27T00:56:36Z'
+  issue: 49
