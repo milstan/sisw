@@ -52,3 +52,18 @@
   submitter_github: DhashS
   submitted_at: '2026-06-20T00:05:31Z'
   issue: 45
+- first: Michael
+  last: Klikushin
+  domain: solbrowser.com
+  repo: ''
+  twitter: mkliku
+  summary: 'I’ve been exploring how browser agents can improve themselves, with the
+    explicit goal of adding as few tools as possible. The basic idea is thin agent,
+    fat skills: keep the harness small, let the agent write the code it needs, then
+    promote repeated lessons into skills/resolvers when they prove useful. I’ll share
+    concrete examples from Sol: using using coding agents to run and analyze browser
+    eval traces, recursively extract learnings to improve the harness, and create
+    optimized skills from real agent failures without breaking the bank.'
+  submitter_github: mklikushin
+  submitted_at: '2026-06-26T07:34:14Z'
+  issue: 47
