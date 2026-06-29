@@ -82,3 +82,15 @@
   submitter_github: Saai151
   submitted_at: '2026-06-27T00:56:36Z'
   issue: 49
+- first: Girish
+  last: Radhakrishnan
+  domain: movedot.ai
+  repo: ''
+  twitter: ''
+  summary: Feature-loop is our methodology to handle feature ideation, planning, implementation,
+    self-testing, self-monitoring, proof-of-work creation, PR and review, autonomously.
+    It will run for 2-3 hours autonomously and deliver a fully working feature. It
+    will then monitor errors and fix them autonomously.
+  submitter_github: girish-movedot-ai
+  submitted_at: '2026-06-28T19:02:16Z'
+  issue: 51
