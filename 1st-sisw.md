@@ -22,7 +22,7 @@ We invited submissions of **5-minute talks** (including Q&A - nothing fancy - ju
 
 **Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & [Erik Dahl](https://github.com/erikd234) ([Parrot](https://parrotapp.com))
 
-👉 **Looking for the next edition?** See the [2nd SISW announcement](README.md).
+👉 **Looking for the next editions?** See the [2nd SISW archive](2nd-sisw.md) and the [3rd SISW announcement](README.md).
 
 ---
 
