@@ -32,6 +32,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
+| [**Test Submission**](https://github.com/milstan)<br>[example.com](https://example.com) | This is an organizer test of the 3rd-edition submission pipeline after resetting talks.yml. It will be closed without merging. |
 <!-- TALKS:END -->
 
 *Submissions just opened — [propose a talk](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml) and be the first on the list.*

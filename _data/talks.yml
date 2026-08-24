@@ -1,7 +1,13 @@
 # Approved talk submissions. Append-only — added via PRs from the
 # .github/workflows/submission-to-pr.yml workflow when an organizer merges.
 # Don't edit by hand unless you're correcting a typo.
-#
-# Reset to [] on 2026-08-24 for the 3rd edition — the 2nd edition's talks
-# are archived in 2nd-sisw.md.
-[]
+- first: Test
+  last: Submission
+  domain: example.com
+  repo: ''
+  twitter: ''
+  summary: This is an organizer test of the 3rd-edition submission pipeline after
+    resetting talks.yml. It will be closed without merging.
+  submitter_github: milstan
+  submitted_at: '2026-08-24T14:55:59Z'
+  issue: 54
