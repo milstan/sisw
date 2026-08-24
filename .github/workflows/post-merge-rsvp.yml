@@ -1,16 +1,14 @@
 name: Post-merge RSVP comment
 
 # When an organizer merges a "talk-submission" PR, post a confirmation
-# comment on the originating issue with the Google Calendar event RSVP
-# link (read from repo variable `SISW_EVENT_URL`). If the variable
-# isn't set yet, the workflow still posts an "approved" comment but
-# without a calendar link.
+# comment on the originating issue with the Luma event RSVP link (read
+# from repo variable `SISW_EVENT_URL`). If the variable isn't set yet,
+# the workflow still posts an "approved" comment but without an RSVP
+# link.
 #
-# How email gets captured: the linked Google Calendar event is public-
-# RSVP (anyone with the link can mark themselves attending). When a
-# speaker RSVPs Yes while signed in to a Google account, Google
-# Calendar shares their email with the event organizer. No form, no
-# server, no separate tooling.
+# How email gets captured: speakers RSVP-ing on the Luma event share
+# their email with the organizer (standard Luma attendee-list
+# behavior). No form, no server, no separate tooling.
 
 on:
   pull_request:
@@ -30,7 +28,7 @@ jobs:
         env:
           # Override via repo variable SISW_EVENT_URL when the public
           # event URL changes (or to fix the manage-vs-public URL).
-          EVENT_URL: ${{ vars.SISW_EVENT_URL || 'https://luma.com/4nzrnhj6' }}
+          EVENT_URL: ${{ vars.SISW_EVENT_URL || 'https://luma.com/60a42tti' }}
         with:
           script: |
             const pr = context.payload.pull_request;
@@ -57,14 +55,14 @@ jobs:
               );
               lines.push('');
               lines.push(
-                "RSVP-ing **Yes** shares your Google account email with the " +
-                "organizer (that's how we'll send you logistics — slot, venue, " +
+                "RSVP-ing on Luma shares your email with the organizer " +
+                "(that's how we'll send you logistics — slot, venue, " +
                 "speaker chat, etc.). No email collected anywhere else."
               );
             } else {
               lines.push('');
               lines.push(
-                "_(Calendar invite link not configured yet. The organizer " +
+                "_(RSVP link not configured yet. The organizer " +
                 "will follow up via your GitHub profile.)_"
               );
             }

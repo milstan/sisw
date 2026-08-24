@@ -88,7 +88,7 @@ No tokens, no secrets, no other config.
 | Path | What it does |
 |---|---|
 | `README.md` | Public homepage for the **current** event. Renders natively on github.com. The "Who's coming" block between `<!-- TALKS:START -->` and `<!-- TALKS:END -->` is auto-regenerated from `_data/talks.yml` on each merge. |
-| `1st-sisw.md` | Static archive of the 1st SISW (San Francisco, May 21 2026). Hand-edited — not regenerated. When a new edition wraps, snapshot the README's "Who's coming" table into a new `Nth-sisw.md`, reset `_data/talks.yml` to `[]`, and point README at the next event. |
+| `1st-sisw.md`, `2nd-sisw.md` | Static archives of past editions (1st: SF, May 21 2026 · 2nd: SF, June 30 2026). Hand-edited — not regenerated. When a new edition wraps, snapshot the README's "Who's coming" table into a new `Nth-sisw.md`, reset `_data/talks.yml` to `[]`, and point README at the next event. |
 | `_data/talks.yml` | Source of truth for approved talks of the **current** event. Append-only via merged PRs; reset to `[]` when starting a new edition (otherwise dedup carries over old submitters). |
 | `index.html` | Tiny redirect for the optional GitHub Pages site at `<user>.github.io/<repo>/`. |
 | `_config.yml` | Jekyll config (only relevant if Pages is enabled). |
