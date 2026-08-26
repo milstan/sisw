@@ -1,11 +1,11 @@
 # 3rd Self-Improving Software Workshop
 
 > **When:** September 3, 2026 · 6pm PDT
-> **Where:** San Francisco, California · [Replicas office](https://replicas.dev/)
+> **Where:** San Francisco, California · [Moda office](https://moda.dev/)
 
 [RSVP on Luma](https://luma.com/60a42tti)
 
-Following the success of the [1st](1st-sisw.md) and [2nd](2nd-sisw.md) Self-Improving Software Workshops, we're organising the third edition on **September 3, 2026**, hosted at the [Replicas](https://replicas.dev/) office. Catch up on what was shared so far: [talks from the 1st edition](1st-sisw.md#talks) · [talks from the 2nd edition](2nd-sisw.md#talks).
+Following the success of the [1st](1st-sisw.md) and [2nd](2nd-sisw.md) Self-Improving Software Workshops, we're organising the third edition on **September 3, 2026**, hosted at the [Moda](https://moda.dev/) office. Catch up on what was shared so far: [talks from the 1st edition](1st-sisw.md#talks) · [talks from the 2nd edition](2nd-sisw.md#talks).
 
 The coding capabilities of frontier models make us all wonder what is the future of Software Engineering.
 
