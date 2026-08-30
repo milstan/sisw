@@ -1,7 +1,22 @@
 # Approved talk submissions. Append-only — added via PRs from the
 # .github/workflows/submission-to-pr.yml workflow when an organizer merges.
 # Don't edit by hand unless you're correcting a typo.
-#
-# Reset to [] on 2026-08-24 for the 3rd edition — the 2nd edition's talks
-# are archived in 2nd-sisw.md.
-[]
+- first: John
+  last: Oram
+  domain: www.veiilstream.com
+  repo: ''
+  twitter: ''
+  summary: '> As implementation effort falls, specification and verification absorb
+    more of the engineering effort.
+
+
+    This talk compares the software development process when software is primarily
+    built by human developers versus when software can increasingly observe, modify,
+    test, and improve itself.
+
+
+    The goal is not to argue that engineering effort disappears. The goal is to show
+    how that effort shifts.'
+  submitter_github: joram
+  submitted_at: '2026-08-30T15:51:57Z'
+  issue: 57

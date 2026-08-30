@@ -32,6 +32,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
+| [**John Oram**](https://github.com/joram)<br>[www.veiilstream.com](https://www.veiilstream.com) | > As implementation effort falls, specification and verification absorb more of the engineering effort.  This talk compares the software development process when software is primarily built by human developers versus when software can increasingly observe, modify, test, and improve itself.  The goal is not to argue that engineering effort disappears. The goal is to show how that effort shifts. |
 <!-- TALKS:END -->
 
 *Submissions just opened — [propose a talk](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml) and be the first on the list.*
