@@ -20,3 +20,19 @@
   submitter_github: joram
   submitted_at: '2026-08-30T15:51:57Z'
   issue: 57
+- first: Videh
+  last: Seksaria
+  domain: mnemoniclabs.ai
+  repo: ''
+  twitter: ''
+  summary: 'We''ve built personal AI models for ourselves which learn how we steer
+    coding agents. These personal models learn our taste, judgement, and thought process
+    better than context / prompt engineering. We use these models to steer an underlying
+    gpt/claude model giving us personalization + frontier generation.
+
+
+    Given this is a 5-minute talk, I plan to start with a demo of the experience and
+    then quickly cover how we trained these models.'
+  submitter_github: videh-mnemonic
+  submitted_at: '2026-08-31T21:59:45Z'
+  issue: 59
