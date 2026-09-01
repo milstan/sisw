@@ -36,3 +36,18 @@
   submitter_github: videh-mnemonic
   submitted_at: '2026-08-31T21:59:45Z'
   issue: 59
+- first: Tiger
+  last: Wang
+  domain: nessielabs.com
+  repo: ''
+  twitter: tigerjwang
+  summary: For self-improving agents, the most useful unit of change isn’t the model
+    - it’s skills you already use everyday in your agents. Nessie keeps a team’s skills
+    synchronized across Codex and Claude Code, observes how each is used, evaluates
+    invocations for immediate failures, and captures explicit feedback when skills
+    break. Those traces surface repeated workflows as new skills and propose concrete
+    edits to existing ones. We’ll demo the full loop for managing, auditing, and self-improving
+    skills in Nessie.
+  submitter_github: thenewpotato
+  submitted_at: '2026-09-01T17:52:58Z'
+  issue: 61
