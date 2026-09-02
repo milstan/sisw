@@ -32,7 +32,7 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
-| [**John Oram**](https://github.com/joram)<br>[www.veiilstream.com](https://www.veiilstream.com) | > As implementation effort falls, specification and verification absorb more of the engineering effort.  This talk compares the software development process when software is primarily built by human developers versus when software can increasingly observe, modify, test, and improve itself.  The goal is not to argue that engineering effort disappears. The goal is to show how that effort shifts. |
+| [**John Oram**](https://github.com/joram)<br>[www.veilstream.com](https://www.veilstream.com) | > As implementation effort falls, specification and verification absorb more of the engineering effort.  This talk compares the software development process when software is primarily built by human developers versus when software can increasingly observe, modify, test, and improve itself.  The goal is not to argue that engineering effort disappears. The goal is to show how that effort shifts. |
 | [**Videh Seksaria**](https://github.com/videh-mnemonic)<br>[mnemoniclabs.ai](https://mnemoniclabs.ai) | We've built personal AI models for ourselves which learn how we steer coding agents. These personal models learn our taste, judgement, and thought process better than context / prompt engineering. We use these models to steer an underlying gpt/claude model giving us personalization + frontier generation.  Given this is a 5-minute talk, I plan to start with a demo of the experience and then quickly cover how we trained these models. |
 <!-- TALKS:END -->
 
