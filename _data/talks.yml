@@ -51,3 +51,16 @@
   submitter_github: thenewpotato
   submitted_at: '2026-09-01T17:52:58Z'
   issue: 61
+- first: Abhishek
+  last: Ray
+  domain: opslane.com
+  repo: https://github.com/opslane/verify
+  twitter: abhishekray
+  summary: The bottleneck has shifted from writing code to verifying it. I built a
+    verification skill that reads the intent of my changes, writes acceptance criteria,
+    spins up my whole infra to run them against, and captures the evidence of what
+    held up and what didn't. When it's done, it generates a report that helps me decide
+    if the change is working the way I intended.
+  submitter_github: abhishekray07
+  submitted_at: '2026-09-03T01:58:10Z'
+  issue: 64
