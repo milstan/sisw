@@ -73,3 +73,17 @@
   submitter_github: mrinalwadhwa
   submitted_at: '2026-09-03T19:19:05Z'
   issue: 66
+- first: Ben
+  last: Swerdlow
+  domain: freestyle.sh
+  repo: ''
+  twitter: benswerd
+  summary: 'Freestyle uses Freestyle to spin up virtual copies of Freestyle to iterate
+    on Freestyle. Freestyle is the most powerful VM platform for agents. A virtual
+    Freestyle is our whole cloud (control plane, workload VMs, the networking between
+    them) running as a fleet of Freestyle VMs on Freestyle. Agents boot one to chase
+    a specific bug: reproduce it against a real distributed system, fix it, prove
+    it''s gone, throw the fleet away. The bugs that only live between machines are
+    the ones this catches.'
+  submitter_github: theswerd
+  submitted_at: '2026-09-03T20:43:01Z'
