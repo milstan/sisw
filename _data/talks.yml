@@ -87,3 +87,19 @@
     the ones this catches.'
   submitter_github: theswerd
   submitted_at: '2026-09-03T20:43:01Z'
+- first: Branavan
+  last: Jegatheeswaran
+  domain: moda.dev
+  repo: ''
+  twitter: branavanj_
+  summary: The hard part of evaluating an agent is the world it acts on. Benchmarks
+    stub that world from a spec, emulators guess it with a model, static replay never
+    leaves the log. Moda records it. Receipts become typed entities with a timeline.
+    A model writes the extractor and handler scripts once, at build time, and after
+    that every step is deterministic CPU. Contracts compiled from the same receipts
+    say what a valid answer looks like, and a continuous validation lane grades every
+    new production receipt against them, attributes each miss to one cause, and triggers
+    repair.
+  submitter_github: Branavan613
+  submitted_at: '2026-09-03T22:44:20Z'
+  issue: 69
