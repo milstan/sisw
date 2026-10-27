@@ -27,3 +27,20 @@
     services in general.
   submitter_github: samjgorman
   submitted_at: '2026-10-26T00:00:00Z'
+- first: Khaliq
+  last: Gant
+  domain: agentrelay.com
+  repo: https://github.com/AgentWorkforce/relay
+  twitter: khaliqgant
+  summary: 'We''re building agent who can communicate. Our development is driven completely
+    by agents with a grok bot and a dot at the top of the food chain driving claude
+    and codex coding agents on our fleet of 8 machines + cloud services like replicas,
+    capy, devin, and cursor.
+
+
+    This talk will be about how we move fast and control the chaos and stay in sync
+    as humans while our agents stay in sync using communication and session history
+    as their guide.'
+  submitter_github: khaliqgant
+  submitted_at: '2026-10-27T22:00:14Z'
+  issue: 78
