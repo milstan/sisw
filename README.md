@@ -1,11 +1,11 @@
-# 3rd Self-Improving Software Workshop
+# 4th Self-Improving Software Workshop
 
-> **When:** September 3, 2026 · 6pm PDT
-> **Where:** San Francisco, California · [Moda office](https://moda.dev/)
+> **When:** November 4, 2026 · 6-8pm PST
+> **Where:** San Francisco, California · hosted by [cmux](https://cmux.com/)
 
-[RSVP on Luma](https://luma.com/60a42tti)
+[RSVP on Luma](https://luma.com/cprgl7av)
 
-Following the success of the [1st](1st-sisw.md) and [2nd](2nd-sisw.md) Self-Improving Software Workshops, we're organising the third edition on **September 3, 2026**, hosted at the [Moda](https://moda.dev/) office. Catch up on what was shared so far: [talks from the 1st edition](1st-sisw.md#talks) · [talks from the 2nd edition](2nd-sisw.md#talks).
+Following the [1st](1st-sisw.md), [2nd](2nd-sisw.md) and [3rd](3rd-sisw.md) Self-Improving Software Workshops, we're organising the fourth edition on **November 4, 2026**, hosted by [cmux](https://cmux.com/). Catch up on what was shared so far: talks from the [1st](1st-sisw.md#talks) · [2nd](2nd-sisw.md#talks) · [3rd](3rd-sisw.md#talks) edition.
 
 The coding capabilities of frontier models make us all wonder what is the future of Software Engineering.
 
@@ -15,11 +15,15 @@ We're seeing the first signs of software being able to self-improve, and are cur
 
 We also believe several minds are smarter than one.
 
-So we're organising this gathering of like-minded (call us crazy) people trying to make software self-improving — to share what we tried, discovered, what seems to be working, and what doesn't.
+So we're organising this gathering of like-minded (call us crazy) people trying to make software self-improving — to share our setups, our techniques and how we work, what we tried, discovered, what seems to be working, and what doesn't.
 
 **No titles, no degrees, just learnings.**
 
-We invite submissions of **5-minute talks** (including Q&A - nothing fancy - just present what you're doing) and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
+We invite submissions of **5-minute talks (this time we'll set a timer)**, followed by a few questions and mingle. Ideally share a GitHub asset (a skill, a repo, even just a report of what you've observed).
+
+**No product pitches.** You can mention your product, but the talk must be about how you're working to build what you're building.
+
+We'll host as many people from the Luma waitlist as we can. Priority goes to those who submit a talk here.
 
 **Organizers:** [Milan Stankovic](https://github.com/milstan) ([Leadbay](https://leadbay.ai)) & [Erik Dahl](https://github.com/erikd234) ([Parrot](https://parrotapp.com))
 
@@ -32,16 +36,12 @@ We invite submissions of **5-minute talks** (including Q&A - nothing fancy - jus
 <!-- TALKS:START -->
 | Speaker | Talk |
 |---|---|
-| [**John Oram**](https://github.com/joram)<br>[www.veiilstream.com](https://www.veiilstream.com) | > As implementation effort falls, specification and verification absorb more of the engineering effort.  This talk compares the software development process when software is primarily built by human developers versus when software can increasingly observe, modify, test, and improve itself.  The goal is not to argue that engineering effort disappears. The goal is to show how that effort shifts. |
-| [**Videh Seksaria**](https://github.com/videh-mnemonic)<br>[mnemoniclabs.ai](https://mnemoniclabs.ai) | We've built personal AI models for ourselves which learn how we steer coding agents. These personal models learn our taste, judgement, and thought process better than context / prompt engineering. We use these models to steer an underlying gpt/claude model giving us personalization + frontier generation.  Given this is a 5-minute talk, I plan to start with a demo of the experience and then quickly cover how we trained these models. |
-| [**Tiger Wang**](https://github.com/thenewpotato)<br>[nessielabs.com](https://nessielabs.com) · [𝕏](https://x.com/tigerjwang) | For self-improving agents, the most useful unit of change isn’t the model - it’s skills you already use everyday in your agents. […](https://github.com/milstan/sisw/issues/61) |
-| [**Abhishek Ray**](https://github.com/abhishekray07)<br>[opslane.com](https://opslane.com) · [𝕏](https://x.com/abhishekray) · [🔗](https://github.com/opslane/verify) | The bottleneck has shifted from writing code to verifying it. I built a verification skill that reads the intent of my changes, writes acceptance criteria, spins up my whole infra to run them against, and captures the evidence of what held up and what didn't. When it's done, it generates a report that helps me decide if the change is working the way I intended. |
-| [**Mrinal Wadhwa**](https://github.com/mrinalwadhwa)<br>[mrinal.com/discord](https://mrinal.com/discord) · [𝕏](https://x.com/mrinal) · [🔗](https://github.com/mrinalwadhwa/fluent) | A walk through of one mechanism for a software factory to learn and improve. |
-| [**Ben Swerdlow**](https://github.com/theswerd)<br>[freestyle.sh](https://freestyle.sh) · [𝕏](https://x.com/benswerd) | Freestyle uses Freestyle to spin up virtual copies of Freestyle to iterate on Freestyle. Freestyle is the most powerful VM platform for agents. A virtual Freestyle is our whole cloud (control plane, workload VMs, the networking between them) running as a fleet of Freestyle VMs on Freestyle. Agents boot one to chase a specific bug: reproduce it against a real distributed system, fix it, prove it's gone, throw the fleet away. The bugs that only live between machines are the ones this catches. |
-| [**Branavan Jegatheeswaran**](https://github.com/Branavan613)<br>[moda.dev](https://moda.dev) · [𝕏](https://x.com/branavanj_) | The hard part of evaluating an agent is the world it acts on. […](https://github.com/milstan/sisw/issues/69) |
+| [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) | How I use simulated persona panels and specialized agents equipped with skills to make product work self-improving. |
+| [**Erik Dahl**](https://github.com/erikd234)<br>[parrotapp.com](https://parrotapp.com) | A mystery breakthrough. Nothing shared upfront. |
+| [**Sam Gorman**](https://github.com/samjgorman)<br>[rivet.design](https://rivet.design) · [𝕏](https://x.com/samueljgorman) | Applying self-improving principles to design, and designing for agentic services in general. |
 <!-- TALKS:END -->
 
-*Submissions just opened — [propose a talk](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml) and be the first on the list.*
+*Submissions are open — [propose a talk](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml).*
 
 <!--
 The "Who's coming" block is auto-regenerated from _data/talks.yml by
@@ -51,5 +51,5 @@ between the TALKS:START and TALKS:END markers.
 Organizer notes (submission flow, dedup, RSVP setup, file map): see
 ORGANIZING.md.
 
-Previous editions: 1st-sisw.md, 2nd-sisw.md
+Previous editions: 1st-sisw.md, 2nd-sisw.md, 3rd-sisw.md
 -->

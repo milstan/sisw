@@ -1,105 +1,29 @@
 # Approved talk submissions. Append-only — added via PRs from the
 # .github/workflows/submission-to-pr.yml workflow when an organizer merges.
 # Don't edit by hand unless you're correcting a typo.
-- first: John
-  last: Oram
-  domain: www.veiilstream.com
+- first: Milan
+  last: Stankovic
+  domain: leadbay.ai
+  repo: ''
+  twitter: milstan
+  summary: How I use simulated persona panels and specialized agents equipped with
+    skills to make product work self-improving.
+  submitter_github: milstan
+  submitted_at: '2026-10-26T00:00:00Z'
+- first: Erik
+  last: Dahl
+  domain: parrotapp.com
   repo: ''
   twitter: ''
-  summary: '> As implementation effort falls, specification and verification absorb
-    more of the engineering effort.
-
-
-    This talk compares the software development process when software is primarily
-    built by human developers versus when software can increasingly observe, modify,
-    test, and improve itself.
-
-
-    The goal is not to argue that engineering effort disappears. The goal is to show
-    how that effort shifts.'
-  submitter_github: joram
-  submitted_at: '2026-08-30T15:51:57Z'
-  issue: 57
-- first: Videh
-  last: Seksaria
-  domain: mnemoniclabs.ai
+  summary: A mystery breakthrough. Nothing shared upfront.
+  submitter_github: erikd234
+  submitted_at: '2026-10-26T00:00:00Z'
+- first: Sam
+  last: Gorman
+  domain: rivet.design
   repo: ''
-  twitter: ''
-  summary: 'We''ve built personal AI models for ourselves which learn how we steer
-    coding agents. These personal models learn our taste, judgement, and thought process
-    better than context / prompt engineering. We use these models to steer an underlying
-    gpt/claude model giving us personalization + frontier generation.
-
-
-    Given this is a 5-minute talk, I plan to start with a demo of the experience and
-    then quickly cover how we trained these models.'
-  submitter_github: videh-mnemonic
-  submitted_at: '2026-08-31T21:59:45Z'
-  issue: 59
-- first: Tiger
-  last: Wang
-  domain: nessielabs.com
-  repo: ''
-  twitter: tigerjwang
-  summary: For self-improving agents, the most useful unit of change isn’t the model
-    - it’s skills you already use everyday in your agents. Nessie keeps a team’s skills
-    synchronized across Codex and Claude Code, observes how each is used, evaluates
-    invocations for immediate failures, and captures explicit feedback when skills
-    break. Those traces surface repeated workflows as new skills and propose concrete
-    edits to existing ones. We’ll demo the full loop for managing, auditing, and self-improving
-    skills in Nessie.
-  submitter_github: thenewpotato
-  submitted_at: '2026-09-01T17:52:58Z'
-  issue: 61
-- first: Abhishek
-  last: Ray
-  domain: opslane.com
-  repo: https://github.com/opslane/verify
-  twitter: abhishekray
-  summary: The bottleneck has shifted from writing code to verifying it. I built a
-    verification skill that reads the intent of my changes, writes acceptance criteria,
-    spins up my whole infra to run them against, and captures the evidence of what
-    held up and what didn't. When it's done, it generates a report that helps me decide
-    if the change is working the way I intended.
-  submitter_github: abhishekray07
-  submitted_at: '2026-09-03T01:58:10Z'
-  issue: 64
-- first: Mrinal
-  last: Wadhwa
-  domain: mrinal.com/discord
-  repo: https://github.com/mrinalwadhwa/fluent
-  twitter: mrinal
-  summary: A walk through of one mechanism for a software factory to learn and improve.
-  submitter_github: mrinalwadhwa
-  submitted_at: '2026-09-03T19:19:05Z'
-  issue: 66
-- first: Ben
-  last: Swerdlow
-  domain: freestyle.sh
-  repo: ''
-  twitter: benswerd
-  summary: 'Freestyle uses Freestyle to spin up virtual copies of Freestyle to iterate
-    on Freestyle. Freestyle is the most powerful VM platform for agents. A virtual
-    Freestyle is our whole cloud (control plane, workload VMs, the networking between
-    them) running as a fleet of Freestyle VMs on Freestyle. Agents boot one to chase
-    a specific bug: reproduce it against a real distributed system, fix it, prove
-    it''s gone, throw the fleet away. The bugs that only live between machines are
-    the ones this catches.'
-  submitter_github: theswerd
-  submitted_at: '2026-09-03T20:43:01Z'
-- first: Branavan
-  last: Jegatheeswaran
-  domain: moda.dev
-  repo: ''
-  twitter: branavanj_
-  summary: The hard part of evaluating an agent is the world it acts on. Benchmarks
-    stub that world from a spec, emulators guess it with a model, static replay never
-    leaves the log. Moda records it. Receipts become typed entities with a timeline.
-    A model writes the extractor and handler scripts once, at build time, and after
-    that every step is deterministic CPU. Contracts compiled from the same receipts
-    say what a valid answer looks like, and a continuous validation lane grades every
-    new production receipt against them, attributes each miss to one cause, and triggers
-    repair.
-  submitter_github: Branavan613
-  submitted_at: '2026-09-03T22:44:20Z'
-  issue: 69
+  twitter: samueljgorman
+  summary: Applying self-improving principles to design, and designing for agentic
+    services in general.
+  submitter_github: samjgorman
+  submitted_at: '2026-10-26T00:00:00Z'
