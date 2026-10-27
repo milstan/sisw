@@ -103,3 +103,13 @@
   submitter_github: Branavan613
   submitted_at: '2026-09-03T22:44:20Z'
   issue: 69
+- first: Test
+  last: Submission
+  domain: example.com
+  repo: ''
+  twitter: ''
+  summary: This is an organizer test of the 4th-edition submission pipeline. It will
+    be closed without merging.
+  submitter_github: milstan
+  submitted_at: '2026-10-27T01:04:27Z'
+  issue: 71
