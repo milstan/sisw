@@ -39,6 +39,7 @@ We'll host as many people from the Luma waitlist as we can. Priority goes to tho
 | [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) | How I use simulated persona panels and specialized agents equipped with skills to make product work self-improving. |
 | [**Erik Dahl**](https://github.com/erikd234)<br>[parrotapp.com](https://parrotapp.com) | A mystery breakthrough. Nothing shared upfront. |
 | [**Sam Gorman**](https://github.com/samjgorman)<br>[rivet.design](https://rivet.design) · [𝕏](https://x.com/samueljgorman) | Applying self-improving principles to design, and designing for agentic services in general. |
+| [**Nicolas Toepr**](https://github.com/nicktoper)<br>[fastjvm.com](https://fastjvm.com) | Auto-optimization loops don't work. People think they do but really they don't. Let me show you where and why it breaks. I can't explain how to fix in 5min but it's an important and overlooked problems |
 <!-- TALKS:END -->
 
 *Submissions are open — [propose a talk](https://github.com/milstan/sisw/issues/new?template=talk-submission.yml).*
