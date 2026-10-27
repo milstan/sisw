@@ -27,3 +27,14 @@
     services in general.
   submitter_github: samjgorman
   submitted_at: '2026-10-26T00:00:00Z'
+- first: Nicolas
+  last: Toepr
+  domain: fastjvm.com
+  repo: ''
+  twitter: ''
+  summary: Auto-optimization loops don't work. People think they do but really they
+    don't. Let me show you where and why it breaks. I can't explain how to fix in
+    5min but it's an important and overlooked problems
+  submitter_github: nicktoper
+  submitted_at: '2026-10-27T17:38:44Z'
+  issue: 76
