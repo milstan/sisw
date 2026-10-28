@@ -15,7 +15,7 @@
   domain: parrotapp.com
   repo: ''
   twitter: ''
-  summary: 'The App Is the IDE. AI is always watching our app and fixing it before anyone complains. I''ll show how we build Parrot from inside Parrot, with cloud agents, a launcher that gives every agent its own stack, and apps that build other apps.'
+  summary: 'The App Is the IDE. Build your app, fork it, test PRs and share ideas with your team, all without leaving the app itself.'
   submitter_github: erikd234
   submitted_at: '2026-10-26T00:00:00Z'
 - first: Sam
