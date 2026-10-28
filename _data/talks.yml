@@ -15,7 +15,8 @@
   domain: parrotapp.com
   repo: ''
   twitter: ''
-  summary: 'The App Is the IDE. Build your app, fork it, test PRs and share ideas with your team, all without leaving the app itself.'
+  summary: The App Is the IDE. Build your app, fork it, test PRs and share ideas with
+    your team, all without leaving the app itself.
   submitter_github: erikd234
   submitted_at: '2026-10-26T00:00:00Z'
 - first: Sam
@@ -44,3 +45,18 @@
   submitter_github: khaliqgant
   submitted_at: '2026-10-27T22:00:14Z'
   issue: 78
+- first: Mehul
+  last: Agarwal
+  domain: koyal.ai
+  repo: ''
+  twitter: meh_agarwal
+  summary: 'Vertical agent harnesses: what changes when your agent makes films instead
+    of code? At Koyal, we’re building an agentic filmmaking platform. I’ll discuss
+    how to design a domain-specific harness around creative workflows: persistent
+    project context, specialized tools, model selection, and human feedback. The focus
+    is the improvement loop: turning failed outputs and user edits into better instructions,
+    skills, and evaluations, especially when there’s no compiler or single correct
+    answer.'
+  submitter_github: agarwalml
+  submitted_at: '2026-10-28T08:47:39Z'
+  issue: 81
