@@ -37,7 +37,7 @@ We'll host as many people from the Luma waitlist as we can. Priority goes to tho
 | Speaker | Talk |
 |---|---|
 | [**Milan Stankovic**](https://github.com/milstan)<br>[leadbay.ai](https://leadbay.ai) · [𝕏](https://x.com/milstan) | How I use simulated persona panels and specialized agents equipped with skills to make product work self-improving. |
-| [**Erik Dahl**](https://github.com/erikd234)<br>[parrotapp.com](https://parrotapp.com) | A mystery breakthrough. Nothing shared upfront. |
+| [**Erik Dahl**](https://github.com/erikd234)<br>[parrotapp.com](https://parrotapp.com) | **The App Is the IDE.** Build your app, fork it, test PRs and share ideas with your team, all without leaving the app itself. |
 | [**Sam Gorman**](https://github.com/samjgorman)<br>[rivet.design](https://rivet.design) · [𝕏](https://x.com/samueljgorman) | Applying self-improving principles to design, and designing for agentic services in general. |
 | [**Khaliq Gant**](https://github.com/khaliqgant)<br>[agentrelay.com](https://agentrelay.com) · [𝕏](https://x.com/khaliqgant) · [🔗](https://github.com/AgentWorkforce/relay) | We're building agent who can communicate. Our development is driven completely by agents with a grok bot and a dot at the top of the food chain driving claude and codex coding agents on our fleet of 8 machines + cloud services like replicas, capy, devin, and cursor.  This talk will be about how we move fast and control the chaos and stay in sync as humans while our agents stay in sync using communication and session history as their guide. |
 <!-- TALKS:END -->
