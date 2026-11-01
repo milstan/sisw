@@ -15,7 +15,8 @@
   domain: parrotapp.com
   repo: ''
   twitter: ''
-  summary: 'The App Is the IDE. Build your app, fork it, test PRs and share ideas with your team, all without leaving the app itself.'
+  summary: The App Is the IDE. Build your app, fork it, test PRs and share ideas with
+    your team, all without leaving the app itself.
   submitter_github: erikd234
   submitted_at: '2026-10-26T00:00:00Z'
 - first: Sam
@@ -54,3 +55,22 @@
     that use your product like real users and catch bugs before you ship.'
   submitter_github: PandelisZ
   submitted_at: '2026-10-31T00:00:00Z'
+- first: Sandeep
+  last: Srinivasa
+  domain: wootzapp.com
+  repo: https://github.com/wootzapp/w8-domdiff-bench
+  twitter: sandeepssrin
+  summary: 'We are building more efficient evals/benchmarks and RL rubrics for browser
+    agents and models.
+
+
+    The current state of the art is to use model-as-a-judge. You send screenshots
+    to a multimodal llm and get results back. We are proposing a browser as a judge.
+    However vanilla browsers dont work well. So we forked the browser and built in
+    something like Reactjs vdom diffing algorithm.
+
+
+    We are kinda beating SOTA here. Would love to show this. Its largely opensource.'
+  submitter_github: sandys
+  submitted_at: '2026-11-01T23:22:31Z'
+  issue: 84
