@@ -54,3 +54,13 @@
     that use your product like real users and catch bugs before you ship.'
   submitter_github: PandelisZ
   submitted_at: '2026-10-31T00:00:00Z'
+- first: Saai
+  last: Arora
+  domain: replicas.dev
+  repo: ''
+  twitter: SaaiArora
+  summary: Presenting my latest blog post on how we run our internal software factory
+    at Replicas. The rest is a mystery until the night.
+  submitter_github: Saai151
+  submitted_at: '2026-10-27T01:33:25Z'
+  issue: 74
