@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SISW 4</title>
+<style>
+:root{--bg:#191919;--fg:#ededed;--dim:#5c5c5c;--line:#262626}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--fg);overflow:hidden}
+body{font:400 2.4vh/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+.s{position:absolute;inset:0;padding:14vh 12vw;display:flex;flex-direction:column;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+.s.on{opacity:1;pointer-events:auto}
+.dim{color:var(--dim)}
+h1{font-size:7vh;font-weight:500;letter-spacing:-.03em;line-height:1.05}
+h2{font-size:4.4vh;font-weight:500;letter-spacing:-.025em;line-height:1.15}
+.big{font-size:15vh;font-weight:500;letter-spacing:-.05em;line-height:1}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:0}
+.corner{position:absolute;left:12vw;bottom:8vh;font-size:1.8vh}
+.top{position:absolute;left:12vw;top:8vh;font-size:1.8vh}
+
+/* 1 · talks */
+.talks{display:grid;grid-template-columns:max-content 1fr;column-gap:6vw;row-gap:2.3vh;font-size:2.5vh}
+
+/* before / after */
+.ba{display:grid;grid-template-columns:max-content max-content max-content;column-gap:4vw;row-gap:5vh;align-items:baseline;font-size:3.6vh}
+.ba .x{color:var(--dim);text-decoration:line-through;text-decoration-thickness:1px}
+
+/* flow */
+.flow{display:flex;align-items:center;gap:3vw;font-size:3.2vh}
+.flow + .flow{margin-top:7vh}
+.arrow{color:var(--dim)}
+.stack{display:flex;flex-direction:column;gap:1.4vh}
+
+/* media */
+.media{display:flex;gap:2vw;align-items:center;justify-content:center;flex:1;min-height:0}
+.media img{max-height:70vh;max-width:100%;cursor:zoom-in;border:1px solid var(--line)}
+video{max-height:80vh;max-width:100%;display:block;margin:auto}
+#zoom{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;cursor:zoom-out;z-index:9}
+#zoom.on{display:flex}
+#zoom img{max-width:96vw;max-height:96vh}
+.s.v{padding:0;align-items:center}
+.s.v video{height:100vh;max-height:none}
+.mvc{width:100%;height:100%;cursor:zoom-in}
+.mvc .ln path{stroke:#777;stroke-width:1.5;fill:none}
+.mvc .bx rect{fill:none;stroke:#555;stroke-width:1.5}
+.mvc text{text-anchor:middle;font-family:inherit}
+.mvc .t1 text{fill:var(--fg);font-size:34px;font-weight:500}
+.mvc .t2 text{fill:var(--dim);font-size:24px}
+</style>
+</head>
+<body>
+
+<!-- 1 · who's talking -->
+<section class="s">
+  <div class="top dim">SISW 4</div>
+  <div class="talks">
+    <div>Milan Stankovic</div><div class="dim">Self-improving product work</div>
+    <div>Erik Dahl</div><div class="dim">The app is the IDE</div>
+    <div>Sam Gorman</div><div class="dim">Self-improving design</div>
+    <div>Khaliq Gant</div><div class="dim">Agents that talk to each other</div>
+    <div>Pandelis Zembashis</div><div class="dim">$2.1M of Codex</div>
+    <div>Saai Arora</div><div class="dim">The Replicas software factory</div>
+    <div>Mehul Agarwal</div><div class="dim">Agents that make films</div>
+    <div>Sandeep Srinivasa</div><div class="dim">The browser as a judge</div>
+  </div>
+  <div class="corner dim">thank you, cmux</div>
+</section>
+
+<!-- 2 · title -->
+<section class="s">
+  <h1>Self-improving<br>product work</h1>
+  <div class="corner dim">Milan Stankovic</div>
+</section>
+
+<!-- 3 · June -->
+<section class="s">
+  <div class="top dim">June · /relentless</div>
+  <div class="big">38,197</div>
+  <div class="dim" style="margin-top:2vh">tokens</div>
+</section>
+
+<!-- 4 · today -->
+<section class="s">
+  <div class="top dim">Today</div>
+  <h2>Work with subagents.<br>Simulate and evaluate the result, not the prompt.<br>Work overnight.</h2>
+  <div class="dim" style="margin-top:4vh">19 tokens</div>
+</section>
+
+<!-- 5 · telemetry -->
+<section class="s">
+  <div class="top dim">Telemetry</div>
+  <div class="ba">
+    <div class="x">verbatim prompt</div><div class="arrow">→</div><div>intent, told by the agent</div>
+    <div class="x">full session on frustration</div><div class="arrow">→</div><div>only when the user reports</div>
+  </div>
+</section>
+
+<!-- 6 · limit -->
+<section class="s">
+  <h2>Improves what exists.</h2>
+  <h2 class="dim">Doesn't invent what's new.</h2>
+</section>
+
+<!-- 7 · what to build -->
+<section class="s">
+  <div class="top dim">Skilled subagents · what to build</div>
+  <div class="flow">
+    <div>past telemetry</div><div class="arrow">→</div>
+    <div class="stack"><div>happy paths</div><div>failure modes</div></div><div class="arrow">→</div>
+    <div class="stack"><div>wants</div><div>needs</div><div>knows</div></div>
+  </div>
+  <div class="flow">
+    <div>WildChat</div><div class="arrow">→</div><div>adjacent needs</div>
+  </div>
+</section>
+
+<!-- 8 · end to end -->
+<section class="s">
+  <div class="top dim">End to end · before / after, not the spec</div>
+  <div class="media"><img src="before-after.png" alt="before and after"></div>
+</section>
+
+<!-- 9 · wireflow -->
+<section class="s">
+  <div class="top dim">Annotated wireflows</div>
+  <div class="media"><img src="wireflow.png" alt="annotated wireflow"></div>
+</section>
+
+<!-- 10 · not yet -->
+<section class="s">
+  <div class="top dim">Not working yet</div>
+  <div class="ba">
+    <div>Words</div><div></div><div></div>
+    <div>Explaining instead of being obvious</div><div></div><div></div>
+    <div class="x">small-model personas</div><div class="arrow">→</div><div>frontier judges only</div>
+  </div>
+</section>
+
+<!-- 11 · the UI of the future -->
+<section class="s">
+  <h2>The UI of the future</h2>
+</section>
+
+<!-- 12 · what agents know about me -->
+<section class="s v">
+  <video src="superbay-me.mp4" muted playsinline preload="auto"></video>
+</section>
+
+<!-- 13 · search -->
+<section class="s v">
+  <video src="superbay-search.mp4" muted playsinline preload="auto"></video>
+</section>
+
+<!-- 14 · how it works -->
+<section class="s">
+  <svg class="mvc" viewBox="0 0 1600 900" data-zoom="architecture.png">
+    <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#777"/></marker></defs>
+    <g class="ln">
+      <path d="M150 400L300 290" marker-end="url(#a)"/>
+      <path d="M150 500L300 610" marker-end="url(#a)"/>
+      <path d="M600 250L800 400" marker-end="url(#a)"/>
+      <path d="M800 500L600 650" marker-start="url(#a)" marker-end="url(#a)"/>
+      <path d="M450 570L450 340" marker-end="url(#a)"/>
+      <path d="M1100 450L1300 450" marker-start="url(#a)" marker-end="url(#a)"/>
+    </g>
+    <g class="bx">
+      <rect x="300" y="160" width="300" height="180" rx="6"/>
+      <rect x="300" y="570" width="300" height="180" rx="6"/>
+      <rect x="800" y="360" width="300" height="180" rx="6"/>
+      <rect x="1300" y="360" width="260" height="180" rx="6"/>
+    </g>
+    <g class="t1">
+      <text x="450" y="245">Controller</text>
+      <text x="450" y="655">View</text>
+      <text x="950" y="445">Gate</text>
+      <text x="1430" y="445">Model</text>
+      <text x="90" y="460">user</text>
+    </g>
+    <g class="t2">
+      <text x="450" y="285">your agent</text>
+      <text x="450" y="695">the card</text>
+      <text x="950" y="485">MCP server</text>
+      <text x="1430" y="485">backend</text>
+      <text x="470" y="462" style="text-anchor:start">user's words</text>
+      <text x="720" y="300" style="text-anchor:end">calls</text>
+      <text x="790" y="625" style="text-anchor:start">draws · taps</text>
+    </g>
+  </svg>
+</section>
+
+<div id="zoom"><img alt=""></div>
+
+<script>
+const S=[...document.querySelectorAll('.s')],Z=document.getElementById('zoom');
+let i=Math.min(S.length-1,Math.max(0,(parseInt(location.hash.slice(1))||1)-1));
+function go(n){
+  i=Math.max(0,Math.min(S.length-1,n));
+  S.forEach((s,k)=>{s.classList.toggle('on',k===i);s.querySelectorAll('video').forEach(v=>{if(k===i){v.currentTime=0;v.play()}else v.pause()})});
+  history.replaceState(null,'','#'+(i+1));
+}
+addEventListener('keydown',e=>{
+  if(Z.classList.contains('on')){if(e.key==='Escape'||e.key===' ')Z.classList.remove('on');return}
+  if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key))go(i+1);
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key))go(i-1);
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(S.length-1);
+  else if(e.key==='f')document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+});
+addEventListener('click',e=>{
+  if(Z.classList.contains('on')){Z.classList.remove('on');return}
+  const zt=e.target.closest('img,[data-zoom]');
+  if(zt){Z.querySelector('img').src=zt.dataset.zoom||zt.src;Z.classList.add('on');return}
+  if(e.target.tagName==='VIDEO')return;
+  go(e.clientX>innerWidth/3?i+1:i-1);
+});
+addEventListener('hashchange',()=>go((parseInt(location.hash.slice(1))||1)-1));
+go(i);
+</script>
+</body>
+</html>
