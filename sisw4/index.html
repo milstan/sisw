@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SISW 4</title>
 <style>
-:root{--bg:#191919;--fg:#ededed;--dim:#5c5c5c;--line:#262626}
+:root{--bg:#fbfbfa;--fg:#141414;--dim:#8e8e8e;--line:#e4e4e2}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg);color:var(--fg);overflow:hidden}
 body{font:400 2.4vh/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
@@ -17,7 +17,7 @@ h2{font-size:4.4vh;font-weight:500;letter-spacing:-.025em;line-height:1.15}
 .big{font-size:15vh;font-weight:500;letter-spacing:-.05em;line-height:1}
 .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:0}
 .corner{position:absolute;left:12vw;bottom:8vh;font-size:1.8vh}
-.top{position:absolute;left:12vw;top:8vh;font-size:1.8vh;color:#8a8a8a;z-index:2}
+.top{position:absolute;left:12vw;top:8vh;font-size:1.8vh;color:#8c8c8c;z-index:2}
 
 /* 1 · talks */
 .talks{display:grid;grid-template-columns:max-content 1fr;column-gap:6vw;row-gap:2.3vh;font-size:2.5vh}
@@ -45,13 +45,22 @@ video{max-height:80vh;max-width:100%;display:block;margin:auto}
 #zoom.on{display:flex}
 #zoom img{max-width:96vw;max-height:96vh}
 .s.v{padding:12vh 0 3vh;align-items:center}
-.s.v video{height:85vh;max-height:none}
-.mvc{width:100%;height:100%;cursor:zoom-in;overflow:visible}
-.mvc .ln path{stroke:#777;stroke-width:1.5;fill:none}
-.mvc .bx rect{fill:none;stroke:#555;stroke-width:1.5}
-.mvc text{text-anchor:middle;font-family:inherit}
-.mvc .t1 text{fill:var(--fg);font-size:34px;font-weight:500}
-.mvc .t2 text{fill:var(--dim);font-size:24px}
+.s.v video{height:85vh;max-height:none;border-radius:10px}
+.vs{display:grid;grid-template-columns:1fr 1fr;column-gap:5vw;margin-top:6vh}
+.col{font-size:2.2vh;margin-bottom:3vh}
+.uf{width:100%;height:auto;overflow:visible}
+.uf text{text-anchor:middle;font-family:inherit}
+.uf .ln path{fill:none;stroke-width:1.5}
+.uf .bx rect{fill:none;stroke-width:1.5}
+.uf .b{font-size:24px;font-weight:500}
+.uf .lb text{font-size:18px}
+.uf.old .ln path,.uf.old .bx rect{stroke:#b9b9b6}
+.uf.old .b{fill:#8f8f8f}
+.uf.old .lb text{fill:#9a9a9a}
+.uf.new .ln path{stroke:#555}
+.uf.new .bx rect{stroke:#333}
+.uf.new .b{fill:var(--fg)}
+.uf.new .lb text{fill:#7a7a7a}
 </style>
 </head>
 <body>
@@ -155,40 +164,40 @@ video{max-height:80vh;max-width:100%;display:block;margin:auto}
 </section>
 
 <section class="s">
-  <div class="top">5 · The UI of the future · how it works</div>
-  <svg class="mvc" viewBox="0 0 1600 900" preserveAspectRatio="xMinYMid meet" data-zoom="architecture.png">
-    <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#777"/></marker></defs>
-    <g class="ln">
-      <path d="M70 410L220 300" marker-end="url(#a)"/>
-      <path d="M70 490L220 600" marker-end="url(#a)"/>
-      <path d="M520 250L720 400" marker-end="url(#a)"/>
-      <path d="M720 500L520 650" marker-start="url(#a)" marker-end="url(#a)"/>
-      <path d="M370 570L370 340" marker-end="url(#a)"/>
-      <path d="M1020 450L1220 450" marker-start="url(#a)" marker-end="url(#a)"/>
-    </g>
-    <g class="bx">
-      <rect x="220" y="160" width="300" height="180" rx="6"/>
-      <rect x="220" y="570" width="300" height="180" rx="6"/>
-      <rect x="720" y="360" width="300" height="180" rx="6"/>
-      <rect x="1220" y="360" width="300" height="180" rx="6"/>
-    </g>
-    <g class="t1">
-      <text x="370" y="245">Controller</text>
-      <text x="370" y="655">View</text>
-      <text x="870" y="445">Gate</text>
-      <text x="1370" y="445">Model</text>
-      <text x="10" y="460" style="text-anchor:start">user</text>
-    </g>
-    <g class="t2">
-      <text x="370" y="285">your agent</text>
-      <text x="370" y="695">the card</text>
-      <text x="870" y="485">MCP server</text>
-      <text x="1370" y="485">backend</text>
-      <text x="390" y="462" style="text-anchor:start">user's words</text>
-      <text x="640" y="290" style="text-anchor:start">calls</text>
-      <text x="640" y="640" style="text-anchor:start">draws · taps</text>
-    </g>
-  </svg>
+  <div class="top">5 · The UI of the future</div>
+  <h2>UI Factory</h2>
+  <div class="vs">
+    <div><div class="dim col">before · a UI kit for the agent</div><svg class="uf old" viewBox="0 0 700 560"><defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b9b9b6"/></marker></defs>
+  <g class="ln">
+    <path d="M220 90L300 90" marker-end="url(#m1)"/>
+    <path d="M300 140L220 140" marker-end="url(#m1)"/>
+    <path d="M500 115L540 115" marker-start="url(#m1)" marker-end="url(#m1)"/>
+    <path d="M120 170L120 380" marker-end="url(#m1)"/>
+  </g>
+  <g class="bx"><rect x="20" y="60" width="200" height="110" rx="6"/><text class="b" x="120" y="123">your agent</text><rect x="300" y="60" width="200" height="110" rx="6"/><text class="b" x="400" y="123">MCP server</text><rect x="540" y="60" width="150" height="110" rx="6"/><text class="b" x="615" y="123">backend</text><rect x="20" y="380" width="200" height="110" rx="6"/><text class="b" x="120" y="443">the card</text></g>
+  <g class="lb">
+    <text x="260" y="80">calls</text>
+    <text x="300" y="215">data · components · instructions</text>
+    <text x="140" y="280" style="text-anchor:start">writes the UI</text>
+  </g>
+</svg></div>
+    <div><div class="col">now · the server draws the card</div><svg class="uf new" viewBox="0 0 700 560"><defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#555"/></marker></defs>
+  <g class="ln">
+    <path d="M220 115L300 115" marker-end="url(#m2)"/>
+    <path d="M500 115L540 115" marker-start="url(#m2)" marker-end="url(#m2)"/>
+    <path d="M380 170L380 380" marker-end="url(#m2)"/>
+    <path d="M420 380L420 170" marker-end="url(#m2)"/>
+    <path d="M300 410L130 170" marker-end="url(#m2)"/>
+  </g>
+  <g class="bx"><rect x="20" y="60" width="200" height="110" rx="6"/><text class="b" x="120" y="123">your agent</text><rect x="300" y="60" width="200" height="110" rx="6"/><text class="b" x="400" y="123">MCP server</text><rect x="540" y="60" width="150" height="110" rx="6"/><text class="b" x="615" y="123">backend</text><rect x="300" y="380" width="200" height="110" rx="6"/><text class="b" x="400" y="443">the card</text></g>
+  <g class="lb">
+    <text x="260" y="100">calls</text>
+    <text x="370" y="280" style="text-anchor:end">draws</text>
+    <text x="432" y="280" style="text-anchor:start">taps</text>
+    <text x="175" y="330" style="text-anchor:end">user's words</text>
+  </g>
+</svg></div>
+  </div>
 </section>
 
 <div id="zoom"><img alt=""></div>
