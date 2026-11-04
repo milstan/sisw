@@ -17,7 +17,7 @@ h2{font-size:4.4vh;font-weight:500;letter-spacing:-.025em;line-height:1.15}
 .big{font-size:15vh;font-weight:500;letter-spacing:-.05em;line-height:1}
 .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:0}
 .corner{position:absolute;left:12vw;bottom:8vh;font-size:1.8vh}
-.top{position:absolute;left:12vw;top:8vh;font-size:1.8vh}
+.top{position:absolute;left:12vw;top:8vh;font-size:1.8vh;color:#8a8a8a;z-index:2}
 
 /* 1 · talks */
 .talks{display:grid;grid-template-columns:max-content 1fr;column-gap:6vw;row-gap:2.3vh;font-size:2.5vh}
@@ -27,21 +27,26 @@ h2{font-size:4.4vh;font-weight:500;letter-spacing:-.025em;line-height:1.15}
 .ba .x{color:var(--dim);text-decoration:line-through;text-decoration-thickness:1px}
 
 /* flow */
-.flow{display:flex;align-items:center;gap:3vw;font-size:3.2vh}
-.flow + .flow{margin-top:7vh}
+.flow{display:grid;grid-template-columns:repeat(5,max-content);column-gap:3vw;row-gap:8vh;align-items:center;font-size:3.2vh}
 .arrow{color:var(--dim)}
 .stack{display:flex;flex-direction:column;gap:1.4vh}
+.ba .row{grid-column:1/-1}
+.cap{margin-top:3vh;font-size:2.2vh}
+.pair{display:flex;gap:3vw;justify-content:center;flex:1;min-height:0;align-items:center}
+.pair figure{display:flex;flex-direction:column;align-items:center;gap:1.5vh;height:100%;justify-content:center}
+.pair img{max-height:62vh;max-width:36vw;cursor:zoom-in;border:1px solid var(--line)}
+.pair figcaption{color:var(--dim);font-size:2vh}
 
 /* media */
 .media{display:flex;gap:2vw;align-items:center;justify-content:center;flex:1;min-height:0}
-.media img{max-height:70vh;max-width:100%;cursor:zoom-in;border:1px solid var(--line)}
+.media img{max-height:62vh;max-width:100%;cursor:zoom-in;border:1px solid var(--line)}
 video{max-height:80vh;max-width:100%;display:block;margin:auto}
 #zoom{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;cursor:zoom-out;z-index:9}
 #zoom.on{display:flex}
 #zoom img{max-width:96vw;max-height:96vh}
-.s.v{padding:0;align-items:center}
-.s.v video{height:100vh;max-height:none}
-.mvc{width:100%;height:100%;cursor:zoom-in}
+.s.v{padding:12vh 0 3vh;align-items:center}
+.s.v video{height:85vh;max-height:none}
+.mvc{width:100%;height:100%;cursor:zoom-in;overflow:visible}
 .mvc .ln path{stroke:#777;stroke-width:1.5;fill:none}
 .mvc .bx rect{fill:none;stroke:#555;stroke-width:1.5}
 .mvc text{text-anchor:middle;font-family:inherit}
@@ -73,118 +78,115 @@ video{max-height:80vh;max-width:100%;display:block;margin:auto}
   <div class="corner dim">Milan Stankovic</div>
 </section>
 
-<!-- 3 · June -->
+<!-- 1 · since June -->
 <section class="s">
-  <div class="top dim">June · /relentless</div>
+  <div class="top">1 · Since June</div>
   <div class="big">38,197</div>
-  <div class="dim" style="margin-top:2vh">tokens</div>
+  <div class="dim" style="margin-top:2vh">tokens · the /relentless skill, June</div>
 </section>
 
-<!-- 4 · today -->
 <section class="s">
-  <div class="top dim">Today</div>
+  <div class="top">1 · Since June</div>
   <h2>Work with subagents.<br>Simulate and evaluate the result, not the prompt.<br>Work overnight.</h2>
-  <div class="dim" style="margin-top:4vh">19 tokens</div>
+  <div class="dim" style="margin-top:4vh">19 tokens · today's whole prompt</div>
 </section>
 
-<!-- 5 · telemetry -->
 <section class="s">
-  <div class="top dim">Telemetry</div>
+  <div class="top">1 · Since June</div>
+  <div class="dim" style="margin-bottom:5vh">telemetry</div>
   <div class="ba">
     <div class="x">verbatim prompt</div><div class="arrow">→</div><div>intent, told by the agent</div>
     <div class="x">full session on frustration</div><div class="arrow">→</div><div>only when the user reports</div>
   </div>
 </section>
 
-<!-- 6 · limit -->
 <section class="s">
-  <h2>Improves what exists.</h2>
-  <h2 class="dim">Doesn't invent what's new.</h2>
+  <div class="top">1 · Since June</div>
+  <h2>The loop improves what exists.</h2>
+  <h2 class="dim">It doesn't invent what's new.</h2>
 </section>
 
-<!-- 7 · what to build -->
+<!-- 2 · what to build -->
 <section class="s">
-  <div class="top dim">Skilled subagents · what to build</div>
+  <div class="top">2 · Subagents decide what to build</div>
   <div class="flow">
     <div>past telemetry</div><div class="arrow">→</div>
     <div class="stack"><div>happy paths</div><div>failure modes</div></div><div class="arrow">→</div>
-    <div class="stack"><div>wants</div><div>needs</div><div>knows</div></div>
-  </div>
-  <div class="flow">
-    <div>WildChat</div><div class="arrow">→</div><div>adjacent needs</div>
+    <div class="stack"><div class="dim">the user's</div><div>wants</div><div>needs</div><div>knows</div></div>
+    <div>WildChat dataset</div><div class="arrow">→</div><div>adjacent needs</div>
   </div>
 </section>
 
-<!-- 8 · end to end -->
 <section class="s">
-  <div class="top dim">End to end · before / after, not the spec</div>
-  <div class="media"><img src="before-after.png" alt="before and after"></div>
+  <div class="top">2 · Subagents decide what to build</div>
+  <div class="pair">
+    <figure><img src="before.png" alt="before"><figcaption>before</figcaption></figure>
+    <figure><img src="after.png" alt="after"><figcaption>after</figcaption></figure>
+  </div>
+  <div class="dim cap">Built end to end. I review before / after, not the spec.</div>
 </section>
 
-<!-- 9 · wireflow -->
+<!-- 3 · self-review -->
 <section class="s">
-  <div class="top dim">Annotated wireflows</div>
+  <div class="top">3 · Self-review, step by step</div>
   <div class="media"><img src="wireflow.png" alt="annotated wireflow"></div>
+  <div class="dim cap">Annotated wireflows: what the user knows, wants, expects, sees</div>
 </section>
 
-<!-- 10 · not yet -->
+<!-- 4 · not working yet -->
 <section class="s">
-  <div class="top dim">Not working yet</div>
+  <div class="top">4 · Not working yet</div>
   <div class="ba">
-    <div>Words</div><div></div><div></div>
-    <div>Explaining instead of being obvious</div><div></div><div></div>
-    <div class="x">small-model personas</div><div class="arrow">→</div><div>frontier judges only</div>
+    <div class="row">Weak copy: I still write it</div>
+    <div class="row">UI explains instead of being obvious</div>
+    <div class="x">small-model user personas</div><div class="arrow">→</div><div>frontier judges only</div>
   </div>
 </section>
 
-<!-- 11 · the UI of the future -->
-<section class="s">
-  <h2>The UI of the future</h2>
-</section>
-
-<!-- 12 · what agents know about me -->
+<!-- 5 · the UI of the future -->
 <section class="s v">
-  <video src="superbay-me.mp4" muted playsinline preload="auto"></video>
+  <div class="top">5 · The UI of the future</div>
+  <video src="superbay-me.mp4" muted playsinline loop preload="auto"></video>
 </section>
 
-<!-- 13 · search -->
 <section class="s v">
-  <video src="superbay-search.mp4" muted playsinline preload="auto"></video>
+  <div class="top">5 · The UI of the future</div>
+  <video src="superbay-search.mp4" muted playsinline loop preload="auto"></video>
 </section>
 
-<!-- 14 · how it works -->
 <section class="s">
-  <svg class="mvc" viewBox="0 0 1600 900" data-zoom="architecture.png">
+  <div class="top">5 · The UI of the future · how it works</div>
+  <svg class="mvc" viewBox="0 0 1600 900" preserveAspectRatio="xMinYMid meet" data-zoom="architecture.png">
     <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#777"/></marker></defs>
     <g class="ln">
-      <path d="M150 400L300 290" marker-end="url(#a)"/>
-      <path d="M150 500L300 610" marker-end="url(#a)"/>
-      <path d="M600 250L800 400" marker-end="url(#a)"/>
-      <path d="M800 500L600 650" marker-start="url(#a)" marker-end="url(#a)"/>
-      <path d="M450 570L450 340" marker-end="url(#a)"/>
-      <path d="M1100 450L1300 450" marker-start="url(#a)" marker-end="url(#a)"/>
+      <path d="M70 410L220 300" marker-end="url(#a)"/>
+      <path d="M70 490L220 600" marker-end="url(#a)"/>
+      <path d="M520 250L720 400" marker-end="url(#a)"/>
+      <path d="M720 500L520 650" marker-start="url(#a)" marker-end="url(#a)"/>
+      <path d="M370 570L370 340" marker-end="url(#a)"/>
+      <path d="M1020 450L1220 450" marker-start="url(#a)" marker-end="url(#a)"/>
     </g>
     <g class="bx">
-      <rect x="300" y="160" width="300" height="180" rx="6"/>
-      <rect x="300" y="570" width="300" height="180" rx="6"/>
-      <rect x="800" y="360" width="300" height="180" rx="6"/>
-      <rect x="1300" y="360" width="260" height="180" rx="6"/>
+      <rect x="220" y="160" width="300" height="180" rx="6"/>
+      <rect x="220" y="570" width="300" height="180" rx="6"/>
+      <rect x="720" y="360" width="300" height="180" rx="6"/>
+      <rect x="1220" y="360" width="300" height="180" rx="6"/>
     </g>
     <g class="t1">
-      <text x="450" y="245">Controller</text>
-      <text x="450" y="655">View</text>
-      <text x="950" y="445">Gate</text>
-      <text x="1430" y="445">Model</text>
-      <text x="90" y="460">user</text>
+      <text x="370" y="245">Controller</text>
+      <text x="370" y="655">View</text>
+      <text x="870" y="445">Gate</text>
+      <text x="1370" y="445">Model</text>
+      <text x="10" y="460" style="text-anchor:start">user</text>
     </g>
     <g class="t2">
-      <text x="450" y="285">your agent</text>
-      <text x="450" y="695">the card</text>
-      <text x="950" y="485">MCP server</text>
-      <text x="1430" y="485">backend</text>
-      <text x="470" y="462" style="text-anchor:start">user's words</text>
-      <text x="720" y="300" style="text-anchor:end">calls</text>
-      <text x="790" y="625" style="text-anchor:start">draws · taps</text>
+      <text x="370" y="285">your agent</text>
+      <text x="370" y="695">the card</text>
+      <text x="870" y="485">MCP server</text>
+      <text x="1370" y="485">backend</text>
+      <text x="390" y="462" style="text-anchor:start">user's words</text>
+      <text x="640" y="290" style="text-anchor:start">calls</text>
+      <text x="640" y="640" style="text-anchor:start">draws · taps</text>
     </g>
   </svg>
 </section>
